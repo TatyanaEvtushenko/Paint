@@ -24,32 +24,26 @@ namespace Paint
             InitializeComponent();
         }
 
-        private void ClickPointerButton(object sender, RoutedEventArgs e)
+        private void ClickPointerTextBlock(object sender, RoutedEventArgs e)
         {
-            var content = ((Button)sender).Content.ToString();
-            isTempFillPointer = content == "Fill";
-            ChangeActivPointerButton();
+            var content = ((TextBlock)sender).Name.ToString();
+            isTempFillPointer = content == "TextBlockFill";
+            ChangeActivOfPointers();
         }
 
-        private void ChangeActivPointerButton()
+        private void ChangeActivOfPointers()
         {
-            var fontWeight = ButtonContour.FontWeight;
-            ButtonContour.FontWeight = ButtonFill.FontWeight;
-            ButtonFill.FontWeight = fontWeight;
+            var fontWeight = TextBlockContour.FontWeight;
+            TextBlockContour.FontWeight = TextBlockFill.FontWeight;
+            TextBlockFill.FontWeight = fontWeight;
         }
 
         private void ClickColorButton(object sender, RoutedEventArgs e)
         {
-            var color = ((Button)sender).Background;
-            if (isTempFillPointer)
-                ChangePointer(color, TextBlockFillPointer);
-            else
-                ChangePointer(color, TextBlockContourPointer);
-        }
-
-        private void ChangePointer(Brush color, TextBlock pointer)
-        {
-            pointer.Foreground = color;
+            var button = (Button)sender;
+            var pointer = isTempFillPointer ? TextBlockFill : TextBlockContour;
+            pointer.Foreground = button.Background;
+            pointer.Padding = StackPanelColors.Margin;
         }
     }
 }
