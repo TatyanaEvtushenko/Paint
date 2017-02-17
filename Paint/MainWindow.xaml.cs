@@ -17,32 +17,39 @@ namespace Paint
 {
     public partial class MainWindow : Window
     {
-        enum KindOfPointer { Fill, Stroke }
-
-        private KindOfPointer tempKind;
+        private bool isTempFillPointer = true;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void ChangeColorOfPointer(object obj)
-        {
-
-        }
-
-        private void MovePointer(object obj)
-        {
-
-        }
-
         private void ClickPointerButton(object sender, RoutedEventArgs e)
         {
             var content = ((Button)sender).Content.ToString();
-            if (content == "Fill")
-                tempKind = KindOfPointer.Fill;
+            isTempFillPointer = content == "Fill";
+            ChangeActivPointerButton();
+        }
+
+        private void ChangeActivPointerButton()
+        {
+            var fontWeight = ButtonContour.FontWeight;
+            ButtonContour.FontWeight = ButtonFill.FontWeight;
+            ButtonFill.FontWeight = fontWeight;
+        }
+
+        private void ClickColorButton(object sender, RoutedEventArgs e)
+        {
+            var color = ((Button)sender).Background;
+            if (isTempFillPointer)
+                ChangePointer(color, TextBlockFillPointer);
             else
-                tempKind = KindOfPointer.Stroke;
+                ChangePointer(color, TextBlockContourPointer);
+        }
+
+        private void ChangePointer(Brush color, TextBlock pointer)
+        {
+            pointer.Foreground = color;
         }
     }
 }
