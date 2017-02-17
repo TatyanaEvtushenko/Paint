@@ -16,7 +16,6 @@ namespace Paint
 
         public static Painter getInstance()
         {
-            int pppppppppppp;
             if (instance == null)
                 instance = new Painter(); 
             return instance;

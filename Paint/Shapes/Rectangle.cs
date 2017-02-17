@@ -12,11 +12,11 @@ namespace Paint
         public Rectangle(Brushes fill, Brushes stroke, byte strokeThickness) : base (fill, stroke, strokeThickness) { }
     }
 
-    class RectangleDrawer : Drawer
-    {
-        public override Shape Draw()
-        {
-            return new Rectangle();
-        }
-    }
+    //class RectangleDrawer : Drawer
+    //{
+    //    public override Shape Draw()
+    //    {
+    //        return new Rectangle();
+    //    }
+    //}
 }

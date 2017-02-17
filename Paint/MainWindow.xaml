@@ -5,31 +5,87 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Paint"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="New paint" Height="600" Width="800">
+    
+    <Window.Resources>
+        <ResourceDictionary Source="ResourcesDictionary.xaml"/>
+    </Window.Resources>
+
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ToolBarTray Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
-            <ToolBar>
-                <ToggleButton>line</ToggleButton>
-                <ToggleButton>line</ToggleButton>
-                <Separator/>
-                <ToggleButton>line</ToggleButton>
-                <ToggleButton>line</ToggleButton>
-                <ToggleButton>line</ToggleButton>
-                <ToggleButton>line</ToggleButton>
-            </ToolBar>
-            <ToolBar>
-                <ToggleButton>line</ToggleButton>
-                <ToggleButton>line</ToggleButton>
-            </ToolBar>
-        </ToolBarTray>
-        <Canvas Grid.Column="0" Grid.Row="1"></Canvas>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Name="TextBlockFill">Fill</TextBlock>
+                <TextBlock Grid.Row="1" Name="TextBlockFillPointer">▼</TextBlock>
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                </StackPanel>
+                <TextBlock Grid.Row="3" Name="TextBlockContourPointer">▲</TextBlock>
+                <TextBlock Grid.Row="4" Name="TextBlockContour">Contour</TextBlock>
+            </Grid>
+            <Canvas Grid.Row="1"></Canvas>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0">Tools</TextBlock>
+            <ToolBarTray Grid.Row="1" Orientation="Vertical"></ToolBarTray>
+            <TextBlock Grid.Row="2">Properties</TextBlock>
+            <Grid Grid.Row="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0">Position of shape</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0">Coordinate X</TextBlock>
+                    <TextBox Grid.Row="1" Grid.Column="1"></TextBox>
+                    <TextBlock Grid.Row="2" Grid.Column="0">Coordinate Y</TextBlock>
+                    <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
