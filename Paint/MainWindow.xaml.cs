@@ -15,14 +15,34 @@ using System.Windows.Shapes;
 
 namespace Paint
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        enum KindOfPointer { Fill, Stroke }
+
+        private KindOfPointer tempKind;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ChangeColorOfPointer(object obj)
+        {
+
+        }
+
+        private void MovePointer(object obj)
+        {
+
+        }
+
+        private void ClickPointerButton(object sender, RoutedEventArgs e)
+        {
+            var content = ((Button)sender).Content.ToString();
+            if (content == "Fill")
+                tempKind = KindOfPointer.Fill;
+            else
+                tempKind = KindOfPointer.Stroke;
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Paint"
         mc:Ignorable="d"
-        Title="New paint" Height="600" Width="800">
+        Title="New paint" Height="600" Width="800" WindowState="Maximized">
     
     <Window.Resources>
         <ResourceDictionary Source="ResourcesDictionary.xaml"/>
@@ -21,7 +21,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" Style="{StaticResource ResourceKey=ToolGrid}">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -29,14 +29,27 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Name="TextBlockFill">Fill</TextBlock>
-                <TextBlock Grid.Row="1" Name="TextBlockFillPointer">▼</TextBlock>
-                <StackPanel Grid.Row="2" Orientation="Horizontal">
-                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
-                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
-                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
-                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
-                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                <Button Grid.Row="0" Name="TextBlockFill" Style="{StaticResource ResourceKey=PointerButton}">Fill</Button>
+                <TextBlock Grid.Row="1" Name="TextBlockFillPointer" Style="{StaticResource ResourceKey=PointerTextBlock}">▼</TextBlock>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Background="Black" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="#FF5A5A5A" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="#FF969696" Style="{StaticResource ResourceKey=ColorButton}"/>
+                    <Button Background="#FFC2C0C0" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="#FFE7E7E7" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="White" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="#FF7D0000" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="White" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="OrangeRed" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="DarkOrange" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Orange" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Gold" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Yellow" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="GreenYellow" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="YellowGreen" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Green" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="DarkGreen" Style="{StaticResource ResourceKey=ColorButton}"></Button>
+                    <Button Background="Pink" Style="{StaticResource ResourceKey=ColorButton}"></Button>
                     <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
                     <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
                     <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
@@ -49,21 +62,21 @@
                     <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
                     <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}"></Button>
                 </StackPanel>
-                <TextBlock Grid.Row="3" Name="TextBlockContourPointer">▲</TextBlock>
-                <TextBlock Grid.Row="4" Name="TextBlockContour">Contour</TextBlock>
+                <TextBlock Grid.Row="3" Name="TextBlockContourPointer" Style="{StaticResource ResourceKey=PointerTextBlock}">▲</TextBlock>
+                <Button Grid.Row="4" Name="TextBlockContour" Style="{StaticResource ResourceKey=PointerButton}">Contour</Button>
             </Grid>
             <Canvas Grid.Row="1"></Canvas>
         </Grid>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Style="{StaticResource ResourceKey=ToolGrid}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0">Tools</TextBlock>
-            <ToolBarTray Grid.Row="1" Orientation="Vertical"></ToolBarTray>
-            <TextBlock Grid.Row="2">Properties</TextBlock>
+            <TextBlock Grid.Row="0" Style="{StaticResource ResourceKey=HeadTextBlock}">Tools</TextBlock>
+            <ToolBarTray Grid.Row="1" Orientation="Vertical" Background="#FFE8EEF4"></ToolBarTray>
+            <TextBlock Grid.Row="2" Style="{StaticResource ResourceKey=HeadTextBlock}">Properties</TextBlock>
             <Grid Grid.Row="3">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
