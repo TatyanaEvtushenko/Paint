@@ -7,9 +7,10 @@ using System.Windows.Media;
 
 namespace Paint
 {
-    class Rectangle : Shape
+    class Rectangle : Ellipse
     {
-        public Rectangle(Brushes fill, Brushes stroke, byte strokeThickness) : base (fill, stroke, strokeThickness) { }
+        public int RadiusX { get; set; }
+        public int RadiusY { get; set; }
     }
 
     //class RectangleDrawer : Drawer

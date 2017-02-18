@@ -27,8 +27,11 @@ namespace Paint
         private void ClickPointerTextBlock(object sender, RoutedEventArgs e)
         {
             var content = ((TextBlock)sender).Name.ToString();
-            isTempFillPointer = content == "TextBlockFill";
-            ChangeActivOfPointers();
+            if (isTempFillPointer && content != "TextBlockFill" || !isTempFillPointer && content == "TextBlockFill")
+            {
+                isTempFillPointer = content == "TextBlockFill";
+                ChangeActivOfPointers();
+            }
         }
 
         private void ChangeActivOfPointers()
@@ -43,7 +46,6 @@ namespace Paint
             var button = (Button)sender;
             var pointer = isTempFillPointer ? TextBlockFill : TextBlockContour;
             pointer.Foreground = button.Background;
-            pointer.Padding = StackPanelColors.Margin;
         }
     }
 }

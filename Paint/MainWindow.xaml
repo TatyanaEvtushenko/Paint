@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Paint"
         mc:Ignorable="d"
-        Title="New paint" Height="600" Width="800" WindowState="Maximized">
+        Title="New paint" Height="600" Width="1000" WindowState="Maximized">
     
     <Window.Resources>
         <ResourceDictionary Source="ResourcesDictionary.xaml"/>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="{StaticResource ResourceKey=ToolBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition/>
@@ -21,80 +21,158 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Style="{StaticResource ResourceKey=ToolGrid}">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Name="TextBlockFill" FontWeight="Black" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▼ Fill</TextBlock>
-                <StackPanel Grid.Row="1" Name="StackPanelColors" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Background="Black" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FF5A5A5A" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FF969696" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
-                    <Button Background="#FFC2C0C0" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FFE7E7E7" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>                    
-                    <Button Background="White" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>                    
-                    <Button Background="#FF9C5A00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FF6B3A00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FF7A0D00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
-                    <Button Background="#FFD10101" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>                    
-                    <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FFFF8000" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>                    
-                    <Button Background="#FFFFC000" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FFFFEE00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FFCCEE09" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
-                    <Button Background="#FF67E200" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FF53B006" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FF046E09" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FF00DFBB" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FF00CBE8" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FF008ECD" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
-                    <Button Background="#FF0039D7" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FF4B00B3" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FF9300D0" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FFEB00FF" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FFD100AD" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FFE00089" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
-                    <Button Background="#FFFF0093" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                    <Button Background="#FFFF6777" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                </StackPanel>
-                <TextBlock Grid.Row="2" Name="TextBlockContour" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▲ Contour</TextBlock>
-            </Grid>
-            <Canvas Grid.Row="1"></Canvas>
-        </Grid>
-        <Grid Grid.Column="1" Style="{StaticResource ResourceKey=ToolGrid}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Style="{StaticResource ResourceKey=HeadTextBlock}">Tools</TextBlock>
-            <ToolBarTray Grid.Row="1" Orientation="Vertical" Background="#FFE8EEF4"></ToolBarTray>
-            <TextBlock Grid.Row="2" Style="{StaticResource ResourceKey=HeadTextBlock}">Properties</TextBlock>
-            <Grid Grid.Row="3">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+            <GroupBox Grid.Row="0" Style="{StaticResource ResourceKey=HeadTextBlock}">
+                <Grid Margin="0 5 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0">Position of shape</TextBlock>
-                    <TextBlock Grid.Row="1" Grid.Column="0">Coordinate X</TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="1"></TextBox>
-                    <TextBlock Grid.Row="2" Grid.Column="0">Coordinate Y</TextBlock>
-                    <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Name="TextBlockFill" FontWeight="ExtraBlack" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▼ Fill</TextBlock>
+                        <StackPanel Grid.Row="1" Name="StackPanelColors" Orientation="Horizontal" Width="Auto" HorizontalAlignment="Center">
+                            <Button Background="Black" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FF5A5A5A" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FF969696" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
+                            <Button Background="#FFC2C0C0" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FFE7E7E7" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="White" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FF9C5A00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FF6B3A00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FF7A0D00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
+                            <Button Background="#FFD10101" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FFFF8000" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FFFFC000" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FFFFEE00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FFCCEE09" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
+                            <Button Background="#FF67E200" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FF53B006" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FF046E09" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FF00DFBB" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FF00CBE8" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FF008ECD" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
+                            <Button Background="#FF0039D7" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FF4B00B3" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FF9300D0" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FFEB00FF" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FFD100AD" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FFE00089" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
+                            <Button Background="#FFFF0093" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                            <Button Background="#FFFF6777" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        </StackPanel>
+                        <TextBlock Grid.Row="2" HorizontalAlignment="Center" Name="TextBlockContour" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▲ Contour</TextBlock>
+                    </Grid>
+                    <ComboBox Grid.Column="1" Margin="5" VerticalAlignment="Center" Padding="10">
+                        <ComboBoxItem>
+                            <Line Style="{StaticResource ResourceKey=BorderLine}" StrokeThickness="1"></Line>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <Line Style="{StaticResource ResourceKey=BorderLine}" StrokeThickness="2.5"></Line>
+                        </ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">
+                            <Line Style="{StaticResource ResourceKey=BorderLine}" StrokeThickness="4"></Line>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <Line Style="{StaticResource ResourceKey=BorderLine}" StrokeThickness="5.5"></Line>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <Line Style="{StaticResource ResourceKey=BorderLine}" StrokeThickness="7"></Line>
+                        </ComboBoxItem>
+                    </ComboBox>
                 </Grid>
-            </Grid>
+            </GroupBox>
+            <Canvas Grid.Row="1" Background="White"></Canvas>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Grid.Row="0" Style="{StaticResource ResourceKey=HeadTextBlock}" Header="Shapes list">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ListBox Grid.Row="0"></ListBox>
+                    <Button Grid.Row="1">Draw all</Button>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Row="1" Style="{StaticResource ResourceKey=HeadTextBlock}" Header="Properties">
+                <StackPanel>
+                    <Grid Name="GridShape" Margin="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0">Shape</TextBlock>
+                        <ComboBox Grid.Column="1">
+                            <Ellipse Fill="{StaticResource ResourceKey=IconBrush}" Width="30" Height="12"></Ellipse>
+                            <Ellipse Fill="{StaticResource ResourceKey=IconBrush}" Width="30" Height="12"></Ellipse>
+                            <Ellipse Fill="{StaticResource ResourceKey=IconBrush}" Width="30" Height="12"></Ellipse>
+                            <Ellipse Fill="{StaticResource ResourceKey=IconBrush}" Width="30" Height="12"></Ellipse>
+                        </ComboBox>
+                    </Grid>
+                    <TextBlock Margin="3 3 3 0">Shape position</TextBlock>
+                    <Grid Name="GridPosition" Margin="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0">Coordinate X</TextBlock>
+                        <TextBox Grid.Column="1" Grid.Row="0"></TextBox>
+                        <TextBlock Grid.Column="0" Grid.Row="1">Coordinate Y</TextBlock>
+                        <TextBox Grid.Column="1" Grid.Row="1"></TextBox>
+                    </Grid>
+                    <TextBlock Margin="3 3 3 0">Points</TextBlock>
+                    <DataGrid x:Name="DataGridPoints" Margin="3,3,2.2,3">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="X" IsReadOnly="False"/>
+                            <DataGridTextColumn Header="Y" IsReadOnly="False"/>
+                        </DataGrid.Columns>
+                        <TextBox/>
+                        <TextBox/>
+                    </DataGrid>
+                    <Grid Name="GridWidth" Margin="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0">Width</TextBlock>
+                        <TextBox Grid.Column="1" Grid.Row="0"></TextBox>
+                        <TextBlock Grid.Column="0" Grid.Row="1">Height</TextBlock>
+                        <TextBox Grid.Column="1" Grid.Row="1"></TextBox>
+                    </Grid>
+                    <Grid Name="GridRadius" Margin="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0">Radius X</TextBlock>
+                        <TextBox Grid.Column="1" Grid.Row="0"></TextBox>
+                        <TextBlock Grid.Column="0" Grid.Row="1">Radius Y</TextBlock>
+                        <TextBox Grid.Column="1" Grid.Row="1"></TextBox>
+                    </Grid>
+                    <Button Margin="3">Add shape</Button>
+                </StackPanel>
+            </GroupBox>
         </Grid>
     </Grid>
 </Window>

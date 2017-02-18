@@ -9,6 +9,8 @@ namespace Paint
 {
     class Line : Shape
     {
+
+
         public Line(Brushes fill, Brushes stroke, byte strokeThickness) : base(fill, stroke, strokeThickness) { }
     }
 
