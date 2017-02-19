@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using library = System.Windows.Shapes;
 
@@ -6,8 +7,8 @@ namespace Paint
 {
     class Rectangle : WidthShape
     {
-        public Rectangle(int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness)
-            : base(width, height, angle, fill, stroke, strokeThickness)
+        public Rectangle(double x, double y, int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness)
+            : base(x, y, width, height, angle, fill, stroke, strokeThickness)
         { }
 
         protected override FrameworkElement CreateShapeForDrawing()
@@ -18,15 +19,17 @@ namespace Paint
             rectangle.Fill = Fill;
             rectangle.Stroke = Stroke;
             rectangle.StrokeThickness = StrokeThickness;
+            rectangle.SetValue(Canvas.LeftProperty, X);
+            rectangle.SetValue(Canvas.TopProperty, Y);
             return rectangle;
         }
     }
 
     class RectangleDrawer : WidthShapeDrawer
     {
-        public override Shape Create(int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness)
+        public override Shape Create(double x, double y, int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness)
         {
-            return new Rectangle(width, height, angle, fill, stroke, strokeThickness);
+            return new Rectangle(x, y, width, height, angle, fill, stroke, strokeThickness);
         }
     }
 }

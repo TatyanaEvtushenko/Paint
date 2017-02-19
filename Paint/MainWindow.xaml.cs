@@ -1,38 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Paint
 {
     public partial class MainWindow : Window
     {
-        private bool isTempFillPointer = true;
-        private bool isWidthDrawer = true;
-
-        private WidthShapeDrawer drawerWidthShape = new EllipseDrawer();
+        private bool isFillPointer, isWidthDrawer;
+        private WidthShapeDrawer drawerWidthShape;
+        private PointsShapeDrawer drawerPointsShape;
        
         public MainWindow()
         {
             InitializeComponent();
+            InitializeParams();
+        }
+
+        private void InitializeParams()
+        {
+            ComboBoxItemEllipse.IsSelected = true;
+            isFillPointer = true;
         }
 
         private void ClickPointerTextBlock(object sender, RoutedEventArgs e)
         {
             var content = ((TextBlock)sender).Name.ToString();
-            if (isTempFillPointer && content != "TextBlockFill" || !isTempFillPointer && content == "TextBlockFill")
+            if (isFillPointer && content != "TextBlockFill" || !isFillPointer && content == "TextBlockFill")
             {
-                isTempFillPointer = content == "TextBlockFill";
+                isFillPointer = content == "TextBlockFill";
                 ChangeActivOfPointers();
             }
         }
@@ -47,7 +44,7 @@ namespace Paint
         private void ClickColorButton(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender;
-            var pointer = isTempFillPointer ? TextBlockFill : TextBlockContour;
+            var pointer = isFillPointer ? TextBlockFill : TextBlockContour;
             pointer.Foreground = button.Background;
         }
 
@@ -102,10 +99,13 @@ namespace Paint
             int maxHeight = (int)CanvasPaint.ActualHeight;
             int maxWidth = (int)CanvasPaint.ActualWidth;
 
-            ButtonAddShape.IsEnabled = CheckIsStrPositiveNumber(TextBoxAngle.Text) && CheckIsStrPositiveNumber(TextBoxHeight.Text)
-                && CheckIsStrPositiveNumber(TextBoxWidth.Text) && CheckIsStrPositiveNumber(TextBoxX.Text) && CheckIsStrPositiveNumber(TextBoxY.Text)
-                && Convert.ToInt32(TextBoxX.Text) < maxWidth && Convert.ToInt32(TextBoxY.Text) < maxHeight;
+            ButtonAddShape.IsEnabled = CheckIsStrPositiveNumber(TextBoxAngle.Text) && CheckIsStrPositiveNumber(TextBoxHeight.Text);
+            //&& CheckIsStrPositiveNumber(TextBoxWidth.Text) && CheckIsStrPositiveNumber(TextBoxX.Text) && CheckIsStrPositiveNumber(TextBoxY.Text)
+            //&& Convert.ToInt32(TextBoxX.Text) < maxWidth && Convert.ToInt32(TextBoxY.Text) < maxHeight;
+        }
 
+        private void ChangePointsTextBoxes(object sender, TextChangedEventArgs e)
+        {
         }
 
         private bool CheckIsStrPositiveNumber(string str)
@@ -116,32 +116,29 @@ namespace Paint
 
         private void AddShape(object sender, RoutedEventArgs e)
         {
-            var fill = TextBlockFill.Background;
-            var stroke = TextBlockContour.Background;
-            var strokeThickness = ((Line)ComboBoxStrokeThickness.SelectedItem).StrokeThickness;
-            Shape shape;
+            var fill = TextBlockFill.Foreground;
+            var stroke = TextBlockContour.Foreground;
+            var strokeThickness = ((Line)((ComboBoxItem)ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness;
 
-            if (true)
-            {
-                int width, height, angle;
-                TakeParamsForWidthShape(out width, out height, out angle);
-                shape = drawerWidthShape.Create(width, height, angle, fill, stroke, strokeThickness);
-            }
-            else { }
-
+            var shape = isWidthDrawer ? CreateWidthShape(fill, stroke, strokeThickness) : CreatePointsShape(fill, stroke, strokeThickness);
             shape.Draw(CanvasPaint);
             //add to list
         }
 
-        private void TakeParamsForWidthShape(out int width, out int height, out int angle)
+        private Shape CreateWidthShape(Brush fill, Brush stroke, double strokeThickness)
         {
-            width = Convert.ToInt32(TextBoxWidth.Text);
-            height = Convert.ToInt32(TextBoxHeight.Text);
-            angle = Convert.ToInt32(TextBoxAngle.Text);
+            double x = Convert.ToDouble(TextBoxX.Text);
+            double y = Convert.ToDouble(TextBoxY.Text);
+            int width = Convert.ToInt32(TextBoxWidth.Text);
+            int height = Convert.ToInt32(TextBoxHeight.Text);
+            int angle = Convert.ToInt32(TextBoxAngle.Text);
+            return drawerWidthShape.Create(x, y, width, height, angle, fill, stroke, strokeThickness);
         }
 
-        private void TakeParamsForPointsShape()
+        private Shape CreatePointsShape(Brush fill, Brush stroke, double strokeThickness)
         {
+            int[] pointsX, pointsY;
+            return drawerPointsShape.Create(pointsX, pointsY, fill, stroke, strokeThickness);
         }
 
         private void SelecteComboBoxItemEllips(object sender, RoutedEventArgs e)
@@ -159,13 +156,14 @@ namespace Paint
             drawerWidthShape = new RoundRectangleDrawer();
         }
 
-        //private void SelecteComboBoxItemPolyline(object sender, RoutedEventArgs e)
-        //{
-        //    drawer = new PolylineDrawer();
-        //}
-        //private void SelecteComboBoxItemPolygon(object sender, RoutedEventArgs e)
-        //{
-        //    drawer = new PolygonDrawer();
-        //}
+        private void SelecteComboBoxItemPolyline(object sender, RoutedEventArgs e)
+        {
+            drawerPointsShape = new PolylineDrawer();
+        }
+
+        private void SelecteComboBoxItemPolygon(object sender, RoutedEventArgs e)
+        {
+            drawerPointsShape = new PolygonDrawer();
+        }
     }
 }

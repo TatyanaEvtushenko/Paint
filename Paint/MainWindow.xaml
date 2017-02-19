@@ -8,7 +8,7 @@
         Title="New paint" Height="650" Width="900">
     
     <Window.Resources>
-        <ResourceDictionary Source="ResourcesDictionary.xaml"/>
+        <ResourceDictionary Source="Dictionary.xaml"/>
     </Window.Resources>
 
     <Grid Background="{StaticResource ResourceKey=ToolBrush}">
@@ -94,7 +94,21 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <GroupBox Grid.Row="1" Style="{StaticResource ResourceKey=HeadTextBlock}" Header="Shapes list">
-                <ListBox Name="ListBoxShapes"></ListBox>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListBox Name="ListBoxShapes" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"></ListBox>
+                    <Button Grid.Column="0" Grid.Row="1">↻</Button>
+                    <Button Grid.Column="1" Grid.Row="1">↺</Button>
+                    <Button Grid.Column="2" Grid.Row="1">Clean all</Button>
+                </Grid>
             </GroupBox>
             <GroupBox Grid.Row="0" Style="{StaticResource ResourceKey=HeadTextBlock}" Header="Properties">
                 <Grid>
@@ -106,9 +120,9 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Style="{StaticResource ResourceKey=HeadTextBlock}">Shape</TextBlock>
                     <ComboBox Grid.Row="1" Name="ComboBoxShape" SelectionChanged="ChangeShape" Margin="3 0 3 3">
-                        <ComboBoxItem Name="ComboBoxItemEllips" IsSelected="True" Selected="SelecteComboBoxItemEllips">
+                        <ComboBoxItem Name="ComboBoxItemEllipse" Selected="SelecteComboBoxItemEllips">
                             <StackPanel>
-                                <TextBlock HorizontalAlignment="Left">Ellips</TextBlock>
+                                <TextBlock HorizontalAlignment="Left">Ellipse</TextBlock>
                                 <Ellipse Margin="5 0" HorizontalAlignment="Left" Fill="{StaticResource ResourceKey=IconBrush}" Height="15" Width="40"></Ellipse>
                             </StackPanel>
                         </ComboBoxItem>
@@ -137,7 +151,7 @@
                             </StackPanel>
                         </ComboBoxItem>
                     </ComboBox>
-                    <StackPanel Grid.Row="2" Name="StackPanelPosition">
+                    <StackPanel Grid.Row="2" Visibility="Hidden" Name="StackPanelPosition">
                         <TextBlock Margin="3 3 3 0" Style="{StaticResource ResourceKey=HeadTextBlock}">Shape position</TextBlock>
                         <Grid Margin="3">
                             <Grid.ColumnDefinitions>
@@ -163,16 +177,34 @@
                             <TextBox Name="TextBoxAngle" Grid.Column="1" Grid.Row="4" Margin="5 2" TextChanged="ChangeWidthTextBoxes"></TextBox>
                         </Grid>
                     </StackPanel>
-                    <StackPanel Grid.Row="2" Visibility="Hidden" Name="StackPanelPoints">
+                    <StackPanel Grid.Row="2" Name="StackPanelPoints">
                         <TextBlock Margin="3 3 3 0" Style="{StaticResource ResourceKey=HeadTextBlock}">Points</TextBlock>
-                        <DataGrid x:Name="DataGridPoints" Margin="3,3,2.2,3">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="X" IsReadOnly="False"/>
-                                <DataGridTextColumn Header="Y" IsReadOnly="False"/>
-                            </DataGrid.Columns>
-                            <TextBox/>
-                            <TextBox/>
-                        </DataGrid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0">X</TextBlock>
+                            <TextBlock Grid.Row="0" Grid.Column="1">Y</TextBlock>
+                            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="160">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Name="StackPanelX" Grid.Column="0">
+                                        <TextBox TextChanged="TextBox_TextChanged"></TextBox>
+                                    </StackPanel>
+                                    <StackPanel Name="StackPanelY" Grid.Column="1">
+                                        <TextBox></TextBox>
+                                    </StackPanel>
+                                </Grid>
+                            </ScrollViewer>
+                        </Grid>
                     </StackPanel>
                     <Button Name="ButtonAddShape" Grid.Row="3" Margin="3" Click="AddShape" IsEnabled="False">Add shape</Button>
                 </Grid>
