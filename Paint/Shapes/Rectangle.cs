@@ -7,17 +7,17 @@ using System.Windows.Media;
 
 namespace Paint
 {
-    class Rectangle : Ellipse
-    {
-        public int RadiusX { get; set; }
-        public int RadiusY { get; set; }
-    }
-
-    //class RectangleDrawer : Drawer
+    //class Rectangle : Ellipse
     //{
-    //    public override Shape Draw()
-    //    {
-    //        return new Rectangle();
-    //    }
+    //    public int RadiusX { get; set; }
+    //    public int RadiusY { get; set; }
     //}
+
+    ////class RectangleDrawer : Drawer
+    ////{
+    ////    public override Shape Draw()
+    ////    {
+    ////        return new Rectangle();
+    ////    }
+    ////}
 }

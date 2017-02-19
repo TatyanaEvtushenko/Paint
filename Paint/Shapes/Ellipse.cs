@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Paint
 {
-    class Ellipse : Shape
-    {
-        public int Width { get; set; }
-        public int Height { get; set; }
-    }
+    //class Ellipse : Shape
+    //{
+    //    public int Width { get; set; }
+    //    public int Height { get; set; }
+    //}
 }

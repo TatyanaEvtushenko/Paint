@@ -59,7 +59,7 @@
     <Compile Include="Shapes\Line.cs" />
     <Compile Include="Painter.cs" />
     <Compile Include="Shapes\Rectangle.cs" />
-    <Compile Include="Shape.cs" />
+    <Compile Include="Shapes\Shape.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

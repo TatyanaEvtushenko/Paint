@@ -47,5 +47,25 @@ namespace Paint
             var pointer = isTempFillPointer ? TextBlockFill : TextBlockContour;
             pointer.Foreground = button.Background;
         }
+
+        private void ChangedShape(object sender, SelectionChangedEventArgs e)
+        {
+            var comboBox = (ComboBox)sender;
+        }
+
+        private void ChangedEnabled()
+        {
+
+        }
+
+        private void AddShape(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DrawShapes(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
