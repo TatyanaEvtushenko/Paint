@@ -86,7 +86,7 @@
                     </ComboBox>
                 </Grid>
             </GroupBox>
-            <Canvas Grid.Row="1" Background="White"></Canvas>
+            <Canvas Name="CanvasPaint" Grid.Row="1" Background="White"></Canvas>
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -105,33 +105,33 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Style="{StaticResource ResourceKey=HeadTextBlock}">Shape</TextBlock>
-                    <ComboBox Grid.Row="1" Name="ComboBoxShape" SelectionChanged="ChangedShape" Margin="3 0 3 3">
-                        <ComboBoxItem IsSelected="True">
-                            <StackPanel Name="StackPanelEllips">
+                    <ComboBox Grid.Row="1" Name="ComboBoxShape" SelectionChanged="ChangeShape" Margin="3 0 3 3">
+                        <ComboBoxItem Name="ComboBoxItemEllips" IsSelected="True" Selected="SelecteComboBoxItemEllips">
+                            <StackPanel>
                                 <TextBlock HorizontalAlignment="Left">Ellips</TextBlock>
-                                <Ellipse Margin="5 0" HorizontalAlignment="Left" Name="Ellips" Fill="{StaticResource ResourceKey=IconBrush}" Height="15" Width="40"></Ellipse>
+                                <Ellipse Margin="5 0" HorizontalAlignment="Left" Fill="{StaticResource ResourceKey=IconBrush}" Height="15" Width="40"></Ellipse>
                             </StackPanel>
                         </ComboBoxItem>
-                        <ComboBoxItem>
-                            <StackPanel Name="StackPanelRectangle">
+                        <ComboBoxItem Name="ComboBoxItemRectangle">
+                            <StackPanel>
                                 <TextBlock HorizontalAlignment="Left">Rectangle</TextBlock>
-                                <Rectangle Margin="5 0" HorizontalAlignment="Left" Name="Rectangle" Fill="{StaticResource ResourceKey=IconBrush}" Height="15" Width="40"></Rectangle>
+                                <Rectangle Margin="5 0" HorizontalAlignment="Left" Fill="{StaticResource ResourceKey=IconBrush}" Height="15" Width="40"></Rectangle>
                             </StackPanel>
                         </ComboBoxItem>
-                        <ComboBoxItem>
-                            <StackPanel Name="StackPanelRoundRectangle">
+                        <ComboBoxItem Name="ComboBoxItemRoundRectangle">
+                            <StackPanel>
                                 <TextBlock HorizontalAlignment="Left">Round rectangle</TextBlock>
-                                <Rectangle Margin="5 0" HorizontalAlignment="Left" Name="RoundRectangle" Fill="{StaticResource ResourceKey=IconBrush}" RadiusX="3" RadiusY="3" Height="15" Width="40"></Rectangle>
+                                <Rectangle Margin="5 0" HorizontalAlignment="Left" Fill="{StaticResource ResourceKey=IconBrush}" RadiusX="3" RadiusY="3" Height="15" Width="40"></Rectangle>
                             </StackPanel>
                         </ComboBoxItem>
-                        <ComboBoxItem>
-                            <StackPanel Name="StackPanelPolygon">
+                        <ComboBoxItem Name="ComboBoxItemPolygon">
+                            <StackPanel>
                                 <TextBlock HorizontalAlignment="Left">Polygon</TextBlock>
                                 <Polygon Margin="5 0" HorizontalAlignment="Left" Fill="{StaticResource ResourceKey=IconBrush}" Points="0 15 20 0 40 15"></Polygon>
                             </StackPanel>
                         </ComboBoxItem>
-                        <ComboBoxItem>
-                            <StackPanel Name="StackPanelPolyline">
+                        <ComboBoxItem Name="ComboBoxItemPolyline">
+                            <StackPanel>
                                 <TextBlock HorizontalAlignment="Left">Polyline</TextBlock>
                                 <Polyline Margin="5 0" HorizontalAlignment="Left" Stroke="{StaticResource ResourceKey=IconBrush}" Points="0 15 20 0 40 15"></Polyline>
                             </StackPanel>
@@ -152,15 +152,15 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0">Coordinate X</TextBlock>
-                            <TextBox Grid.Column="1" Grid.Row="0" Margin="5 2"></TextBox>
+                            <TextBox Name="TextBoxX" Grid.Column="1" Grid.Row="0" Margin="5 2" TextChanged="ChangePositionText"></TextBox>
                             <TextBlock Grid.Column="0" Grid.Row="1">Coordinate Y</TextBlock>
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="5 2"></TextBox>
+                            <TextBox Name="TextBoxY" Grid.Column="1" Grid.Row="1" Margin="5 2" TextChanged="ChangePositionText"></TextBox>
                             <TextBlock Grid.Column="0" Grid.Row="2">Width</TextBlock>
-                            <TextBox Grid.Column="1" Grid.Row="2" Margin="5 2"></TextBox>
+                            <TextBox Name="TextBoxWidth" Grid.Column="1" Grid.Row="2" Margin="5 2" TextChanged="ChangePositionText"></TextBox>
                             <TextBlock Grid.Column="0" Grid.Row="3">Height</TextBlock>
-                            <TextBox Grid.Column="1" Grid.Row="3" Margin="5 2"></TextBox>
+                            <TextBox Name="TextBoxHeight" Grid.Column="1" Grid.Row="3" Margin="5 2" TextChanged="ChangePositionText"></TextBox>
                             <TextBlock Grid.Column="0" Grid.Row="4">Angle</TextBlock>
-                            <TextBox Grid.Column="1" Grid.Row="4" Margin="5 2"></TextBox>
+                            <TextBox Name="TextBoxAngle" Grid.Column="1" Grid.Row="4" Margin="5 2" TextChanged="ChangePositionText"></TextBox>
                         </Grid>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Visibility="Hidden" Name="StackPanelPoints">
@@ -174,7 +174,7 @@
                             <TextBox/>
                         </DataGrid>
                     </StackPanel>
-                    <Button Grid.Row="3" Margin="3" Click="AddShape">Add shape</Button>
+                    <Button Name="ButtonAddShape" Grid.Row="3" Margin="3" Click="AddShape" IsEnabled="False">Add shape</Button>
                 </Grid>
             </GroupBox>
         </Grid>
