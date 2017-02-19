@@ -55,15 +55,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Shapes\Ellipse.cs" />
+    <Compile Include="MyShapes\Ellipse.cs" />
     <Compile Include="Painter.cs" />
-    <Compile Include="Shapes\Patterns\PointsShape.cs" />
-    <Compile Include="Shapes\Polygon.cs" />
-    <Compile Include="Shapes\Polyline.cs" />
-    <Compile Include="Shapes\Rectangle.cs" />
-    <Compile Include="Shapes\RoundRectangle.cs" />
-    <Compile Include="Shapes\Patterns\Shape.cs" />
-    <Compile Include="Shapes\Patterns\WidthShape.cs" />
+    <Compile Include="MyShapes\Patterns\PointsShape.cs" />
+    <Compile Include="MyShapes\Polygon.cs" />
+    <Compile Include="MyShapes\Polyline.cs" />
+    <Compile Include="MyShapes\Rectangle.cs" />
+    <Compile Include="MyShapes\RoundRectangle.cs" />
+    <Compile Include="MyShapes\Patterns\Shape.cs" />
+    <Compile Include="MyShapes\Patterns\WidthShape.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

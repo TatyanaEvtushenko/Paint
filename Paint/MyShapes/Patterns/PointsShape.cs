@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Paint
 {
-    class PointsShape : Shape
-    {
-        public int[] PointsX { get; set; }
-        public int[] PointsY { get; set; }
-    }
+//    class PointsShape : Shape
+//    {
+//        public int[] PointsX { get; set; }
+//        public int[] PointsY { get; set; }
+//    }
 }

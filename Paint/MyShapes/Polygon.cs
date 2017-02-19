@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Paint.Shapes
+namespace Paint
 {
-    class RoundRectangle : Rectangle
+    class Polygon
     {
     }
 }

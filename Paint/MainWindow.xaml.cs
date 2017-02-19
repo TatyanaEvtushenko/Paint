@@ -18,8 +18,10 @@ namespace Paint
     public partial class MainWindow : Window
     {
         private bool isTempFillPointer = true;
-        private ShapeDrawer drawer = new EllipseDrawer();
+        private bool isWidthDrawer = true;
 
+        private WidthShapeDrawer drawerWidthShape = new EllipseDrawer();
+       
         public MainWindow()
         {
             InitializeComponent();
@@ -58,13 +60,27 @@ namespace Paint
                 case "ComboBoxItemRectangle":
                 case "ComboBoxItemRoundRectangle":
                 case "ComboBoxItemEllipse":
-                    ChangeStackPanelVisibility(StackPanelPosition, StackPanelPoints);
-                    CleanShapeTextBoxes();
+                    isWidthDrawer = true;
                     break;
                 case "ComboBoxItemPolyline":
                 case "ComboBoxItemPolygon":
-                    ChangeStackPanelVisibility(StackPanelPoints, StackPanelPosition);
+                    isWidthDrawer = false;
                     break;
+            }
+            ChangeDrawer();
+        }
+
+        private void ChangeDrawer()
+        {
+            if (isWidthDrawer)
+            {
+                ChangeStackPanelVisibility(StackPanelPosition, StackPanelPoints);
+                CleanWidthTextBoxes();
+            }
+            else
+            {
+                ChangeStackPanelVisibility(StackPanelPoints, StackPanelPosition);
+                CleanPointsTextBoxes();
             }
         }
 
@@ -74,12 +90,14 @@ namespace Paint
             hidden.Visibility = Visibility.Hidden;
         }
 
-        private void CleanShapeTextBoxes()
+        private void CleanWidthTextBoxes()
         {
             TextBoxX.Text = TextBoxY.Text = TextBoxWidth.Text = TextBoxHeight.Text = TextBoxAngle.Text = "";
         }
 
-        private void ChangePositionText(object sender, TextChangedEventArgs e)
+        private void CleanPointsTextBoxes() { }
+
+        private void ChangeWidthTextBoxes(object sender, TextChangedEventArgs e)
         {
             int maxHeight = (int)CanvasPaint.ActualHeight;
             int maxWidth = (int)CanvasPaint.ActualWidth;
@@ -98,22 +116,49 @@ namespace Paint
 
         private void AddShape(object sender, RoutedEventArgs e)
         {
-            drawer.Draw();
+            var fill = TextBlockFill.Background;
+            var stroke = TextBlockContour.Background;
+            var strokeThickness = ((Line)ComboBoxStrokeThickness.SelectedItem).StrokeThickness;
+            Shape shape;
+
+            if (true)
+            {
+                int width, height, angle;
+                TakeParamsForWidthShape(out width, out height, out angle);
+                shape = drawerWidthShape.Create(width, height, angle, fill, stroke, strokeThickness);
+            }
+            else { }
+
+            shape.Draw(CanvasPaint);
+            //add to list
+        }
+
+        private void TakeParamsForWidthShape(out int width, out int height, out int angle)
+        {
+            width = Convert.ToInt32(TextBoxWidth.Text);
+            height = Convert.ToInt32(TextBoxHeight.Text);
+            angle = Convert.ToInt32(TextBoxAngle.Text);
+        }
+
+        private void TakeParamsForPointsShape()
+        {
         }
 
         private void SelecteComboBoxItemEllips(object sender, RoutedEventArgs e)
         {
-            drawer = new EllipseDrawer(); 
+            drawerWidthShape = new EllipseDrawer(); 
         }
 
-        //private void SelecteComboBoxItemRectangle(object sender, RoutedEventArgs e)
-        //{
-        //    drawer = new RectangleDrawer();
-        //}
-        //private void SelecteComboBoxItemRoundRectangle(object sender, RoutedEventArgs e)
-        //{
-        //    drawer = new RoundRectangleDrawer();
-        //}
+        private void SelecteComboBoxItemRectangle(object sender, RoutedEventArgs e)
+        {
+            drawerWidthShape = new RectangleDrawer();
+        }
+
+        private void SelecteComboBoxItemRoundRectangle(object sender, RoutedEventArgs e)
+        {
+            drawerWidthShape = new RoundRectangleDrawer();
+        }
+
         //private void SelecteComboBoxItemPolyline(object sender, RoutedEventArgs e)
         //{
         //    drawer = new PolylineDrawer();

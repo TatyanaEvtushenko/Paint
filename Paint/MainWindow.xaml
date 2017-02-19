@@ -67,7 +67,7 @@
                         </StackPanel>
                         <TextBlock Grid.Row="2" HorizontalAlignment="Center" Name="TextBlockContour" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▲ Contour</TextBlock>
                     </Grid>
-                    <ComboBox Grid.Column="1" Margin="5" VerticalAlignment="Center" Padding="10">
+                    <ComboBox Name="ComboBoxStrokeThickness" Grid.Column="1" Margin="5" VerticalAlignment="Center" Padding="10">
                         <ComboBoxItem>
                             <Line Style="{StaticResource ResourceKey=BorderLine}" StrokeThickness="1"></Line>
                         </ComboBoxItem>
@@ -152,15 +152,15 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0">Coordinate X</TextBlock>
-                            <TextBox Name="TextBoxX" Grid.Column="1" Grid.Row="0" Margin="5 2" TextChanged="ChangePositionText"></TextBox>
+                            <TextBox Name="TextBoxX" Grid.Column="1" Grid.Row="0" Margin="5 2" TextChanged="ChangeWidthTextBoxes"></TextBox>
                             <TextBlock Grid.Column="0" Grid.Row="1">Coordinate Y</TextBlock>
-                            <TextBox Name="TextBoxY" Grid.Column="1" Grid.Row="1" Margin="5 2" TextChanged="ChangePositionText"></TextBox>
+                            <TextBox Name="TextBoxY" Grid.Column="1" Grid.Row="1" Margin="5 2" TextChanged="ChangeWidthTextBoxes"></TextBox>
                             <TextBlock Grid.Column="0" Grid.Row="2">Width</TextBlock>
-                            <TextBox Name="TextBoxWidth" Grid.Column="1" Grid.Row="2" Margin="5 2" TextChanged="ChangePositionText"></TextBox>
+                            <TextBox Name="TextBoxWidth" Grid.Column="1" Grid.Row="2" Margin="5 2" TextChanged="ChangeWidthTextBoxes"></TextBox>
                             <TextBlock Grid.Column="0" Grid.Row="3">Height</TextBlock>
-                            <TextBox Name="TextBoxHeight" Grid.Column="1" Grid.Row="3" Margin="5 2" TextChanged="ChangePositionText"></TextBox>
+                            <TextBox Name="TextBoxHeight" Grid.Column="1" Grid.Row="3" Margin="5 2" TextChanged="ChangeWidthTextBoxes"></TextBox>
                             <TextBlock Grid.Column="0" Grid.Row="4">Angle</TextBlock>
-                            <TextBox Name="TextBoxAngle" Grid.Column="1" Grid.Row="4" Margin="5 2" TextChanged="ChangePositionText"></TextBox>
+                            <TextBox Name="TextBoxAngle" Grid.Column="1" Grid.Row="4" Margin="5 2" TextChanged="ChangeWidthTextBoxes"></TextBox>
                         </Grid>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Visibility="Hidden" Name="StackPanelPoints">
