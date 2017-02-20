@@ -13,10 +13,11 @@ namespace Paint
 
         protected override FrameworkElement CreateShapeForDrawing()
         {
-            var rectangle = new library.Ellipse();
+            var rectangle = new library.Rectangle();
             rectangle.Width = Width;
             rectangle.Height = Height;
             rectangle.Fill = Fill;
+            rectangle.RenderTransform = new RotateTransform() { Angle = Angle };
             rectangle.Stroke = Stroke;
             rectangle.StrokeThickness = StrokeThickness;
             rectangle.SetValue(Canvas.LeftProperty, X);

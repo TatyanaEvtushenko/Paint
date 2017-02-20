@@ -35,6 +35,12 @@ namespace Paint
                 shape.Draw(canvas);
         }
 
+        public void Clean()
+        {
+            ShapesList = new List<Shape>();
+            canvas.Children.Clear();
+        }
+
         public void AddNewShapeToList(Shape shape)
         {
             AddToList(shape);
@@ -52,6 +58,7 @@ namespace Paint
         {
             var shape = ShapesList.Last<Shape>();
             ShapesList.Remove(shape);
+            canvas.Children.RemoveAt(canvas.Children.Count - 1);
             return shape;
         }
 
@@ -61,6 +68,11 @@ namespace Paint
         }
 
         public bool CanGoToBackStep()
+        {
+            return ShapesList.Count > 0;
+        }
+
+        public bool CanClean()
         {
             return ShapesList.Count > 0;
         }

@@ -149,6 +149,7 @@ namespace Paint
 
             var shape = isWidthDrawer ? CreateWidthShape(fill, stroke, strokeThickness) : CreatePointsShape(fill, stroke, strokeThickness);
             Painter.getInstance(CanvasPaint).AddNewShapeToList(shape);
+            ChangeStepButtonEnableds();
         }
 
         private Shape CreateWidthShape(Brush fill, Brush stroke, double strokeThickness)
@@ -200,6 +201,33 @@ namespace Paint
         private void SelecteComboBoxItemPolygon(object sender, RoutedEventArgs e)
         {
             drawerPointsShape = new PolygonDrawer();
+        }
+
+        private void GoToForwardStep(object sender, RoutedEventArgs e)
+        {
+            Painter.getInstance(CanvasPaint).GoToForwardStep();
+            ChangeStepButtonEnableds();
+        }
+
+        private void GoToBackStep(object sender, RoutedEventArgs e)
+        {
+            Painter.getInstance(CanvasPaint).GoToBackStep();
+            ChangeStepButtonEnableds();
+        }
+
+        private void CleanAll(object sender, RoutedEventArgs e)
+        {
+            Painter.getInstance(CanvasPaint).Clean();
+            ChangeStepButtonEnableds();
+        }
+
+        private void ChangeStepButtonEnableds()
+        {
+            var painter = Painter.getInstance(CanvasPaint);
+            ButtonClean.IsEnabled = painter.CanClean();
+            ButtonForward.IsEnabled = painter.CanGoToForwardStep();
+            ButtonBack.IsEnabled = painter.CanGoToBackStep();
+            ListBoxShapes.ItemsSource = Painter.getInstance(CanvasPaint).ShapesList.ToList();
         }
     }
 }

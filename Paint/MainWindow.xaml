@@ -104,10 +104,20 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <ListBox Name="ListBoxShapes" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"></ListBox>
-                    <Button Grid.Column="0" Grid.Row="1">↻</Button>
-                    <Button Grid.Column="1" Grid.Row="1">↺</Button>
-                    <Button Grid.Column="2" Grid.Row="1">Clean all</Button>
+                    <ListBox Name="ListBoxShapes" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" FontSize="12">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Background="{StaticResource ResourceKey=ToolBrush}" HorizontalAlignment="Stretch" Margin="2">
+                                    <TextBlock Text="{Binding Path=Description}"></TextBlock>
+                                    <TextBlock Foreground="{Binding Path=Fill}"> Fill </TextBlock>
+                                    <TextBlock Foreground="{Binding Path=Stroke}"> Stroke</TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button Name="ButtonBack" Grid.Column="0" Grid.Row="1" Click="GoToBackStep" IsEnabled="False">↻</Button>
+                    <Button Name="ButtonForward" Grid.Column="1" Grid.Row="1" Click="GoToForwardStep" IsEnabled="False">↺</Button>
+                    <Button Name="ButtonClean" Grid.Column="2" Grid.Row="1" Click="CleanAll" IsEnabled="False">Clean all</Button>
                 </Grid>
             </GroupBox>
             <GroupBox Grid.Row="0" Style="{StaticResource ResourceKey=HeadTextBlock}" Header="Properties">

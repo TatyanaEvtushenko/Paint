@@ -7,7 +7,7 @@ namespace Paint
 {
     class Ellipse : WidthShape
     {
-        public Ellipse(double x, double y, int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness) 
+        public Ellipse(double x, double y, int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness)
             : base(x, y, width, height, angle, fill, stroke, strokeThickness)
         { }
 
@@ -17,6 +17,7 @@ namespace Paint
             ellipse.Width = Width;
             ellipse.Height = Height;
             ellipse.Fill = Fill;
+            ellipse.RenderTransform = new RotateTransform() { Angle = Angle };
             ellipse.Stroke = Stroke;
             ellipse.StrokeThickness = StrokeThickness;
             ellipse.SetValue(Canvas.LeftProperty, X);

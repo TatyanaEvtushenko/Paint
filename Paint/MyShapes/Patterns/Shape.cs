@@ -10,12 +10,14 @@ namespace Paint
         public Brush Fill { get; set; }
         public Brush Stroke { get; set; }
         public double StrokeThickness { get; set; }
+        public string Description { get; set; }
 
         public Shape(Brush fill, Brush stroke, double strokeThickness)
         {
             Fill = fill;
             Stroke = stroke;
             StrokeThickness = strokeThickness;
+            Description = this.ToString();
         }
 
         protected abstract FrameworkElement CreateShapeForDrawing();
