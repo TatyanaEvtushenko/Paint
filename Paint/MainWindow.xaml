@@ -126,25 +126,25 @@
                                 <Ellipse Margin="5 0" HorizontalAlignment="Left" Fill="{StaticResource ResourceKey=IconBrush}" Height="15" Width="40"></Ellipse>
                             </StackPanel>
                         </ComboBoxItem>
-                        <ComboBoxItem Name="ComboBoxItemRectangle">
+                        <ComboBoxItem Name="ComboBoxItemRectangle" Selected="SelecteComboBoxItemRectangle">
                             <StackPanel>
                                 <TextBlock HorizontalAlignment="Left">Rectangle</TextBlock>
                                 <Rectangle Margin="5 0" HorizontalAlignment="Left" Fill="{StaticResource ResourceKey=IconBrush}" Height="15" Width="40"></Rectangle>
                             </StackPanel>
                         </ComboBoxItem>
-                        <ComboBoxItem Name="ComboBoxItemRoundRectangle">
+                        <ComboBoxItem Name="ComboBoxItemRoundRectangle" Selected="SelecteComboBoxItemRoundRectangle">
                             <StackPanel>
                                 <TextBlock HorizontalAlignment="Left">Round rectangle</TextBlock>
                                 <Rectangle Margin="5 0" HorizontalAlignment="Left" Fill="{StaticResource ResourceKey=IconBrush}" RadiusX="3" RadiusY="3" Height="15" Width="40"></Rectangle>
                             </StackPanel>
                         </ComboBoxItem>
-                        <ComboBoxItem Name="ComboBoxItemPolygon">
+                        <ComboBoxItem Name="ComboBoxItemPolygon" Selected="SelecteComboBoxItemPolygon">
                             <StackPanel>
                                 <TextBlock HorizontalAlignment="Left">Polygon</TextBlock>
                                 <Polygon Margin="5 0" HorizontalAlignment="Left" Fill="{StaticResource ResourceKey=IconBrush}" Points="0 15 20 0 40 15"></Polygon>
                             </StackPanel>
                         </ComboBoxItem>
-                        <ComboBoxItem Name="ComboBoxItemPolyline">
+                        <ComboBoxItem Name="ComboBoxItemPolyline" Selected="SelecteComboBoxItemPolyline">
                             <StackPanel>
                                 <TextBlock HorizontalAlignment="Left">Polyline</TextBlock>
                                 <Polyline Margin="5 0" HorizontalAlignment="Left" Stroke="{StaticResource ResourceKey=IconBrush}" Points="0 15 20 0 40 15"></Polyline>
@@ -190,17 +190,17 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0">X</TextBlock>
                             <TextBlock Grid.Row="0" Grid.Column="1">Y</TextBlock>
-                            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="160">
+                            <ScrollViewer Name="ScrollViewerPoints" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="160">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Name="StackPanelX" Grid.Column="0">
-                                        <TextBox TextChanged="TextBox_TextChanged"></TextBox>
+                                        <TextBox Name="TextBoxX0" TextChanged="ChangePointsTextBoxes"></TextBox>
                                     </StackPanel>
                                     <StackPanel Name="StackPanelY" Grid.Column="1">
-                                        <TextBox></TextBox>
+                                        <TextBox Name="TextBoxY0" TextChanged="ChangePointsTextBoxes"></TextBox>
                                     </StackPanel>
                                 </Grid>
                             </ScrollViewer>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -99,19 +101,44 @@ namespace Paint
             int maxHeight = (int)CanvasPaint.ActualHeight;
             int maxWidth = (int)CanvasPaint.ActualWidth;
 
-            ButtonAddShape.IsEnabled = CheckIsStrPositiveNumber(TextBoxAngle.Text) && CheckIsStrPositiveNumber(TextBoxHeight.Text);
-            //&& CheckIsStrPositiveNumber(TextBoxWidth.Text) && CheckIsStrPositiveNumber(TextBoxX.Text) && CheckIsStrPositiveNumber(TextBoxY.Text)
-            //&& Convert.ToInt32(TextBoxX.Text) < maxWidth && Convert.ToInt32(TextBoxY.Text) < maxHeight;
+            ButtonAddShape.IsEnabled = CheckIsStrPositiveNumber(TextBoxAngle.Text) && CheckIsStrPositiveNumber(TextBoxHeight.Text)
+            && CheckIsStrPositiveNumber(TextBoxWidth.Text) && CheckIsStrPositiveNumber(TextBoxX.Text) && CheckIsStrPositiveNumber(TextBoxY.Text)
+            && Convert.ToInt32(TextBoxX.Text) < maxWidth && Convert.ToInt32(TextBoxY.Text) < maxHeight;
         }
 
         private void ChangePointsTextBoxes(object sender, TextChangedEventArgs e)
         {
+            var textBoxesX = StackPanelX.Children.OfType<TextBox>().ToList();
+            var textBoxesY = StackPanelY.Children.OfType<TextBox>().ToList();
+            bool isCorrect = true;
+            int last = textBoxesX.Count - 1;
+
+            for (int i = 0; i < last && isCorrect; i++)
+                isCorrect = CheckIsStrPositiveNumber(textBoxesX[i].Text) && CheckIsStrPositiveNumber(textBoxesY[i].Text);
+
+            if (isCorrect && CheckIsStrPositiveNumber(textBoxesX[last].Text) && CheckIsStrPositiveNumber(textBoxesY[last].Text))
+            {
+                if (last > 0)
+                    ButtonAddShape.IsEnabled = true;
+                StackPanelX.Children.Add(CreatePointTextBox());
+                StackPanelY.Children.Add(CreatePointTextBox());
+                ScrollViewerPoints.ScrollToEnd();
+            }
+            else
+                ButtonAddShape.IsEnabled = textBoxesX[last].Text == "" && textBoxesY[last].Text == "";
+        }
+
+        private TextBox CreatePointTextBox()
+        {
+            var textBox = new TextBox();
+            textBox.TextChanged += new TextChangedEventHandler(ChangePointsTextBoxes);
+            return textBox;
         }
 
         private bool CheckIsStrPositiveNumber(string str)
         {
             int num;
-            return Int32.TryParse(TextBoxAngle.Text, out num) && num >= 0;
+            return Int32.TryParse(str, out num) && num >= 0;
         }
 
         private void AddShape(object sender, RoutedEventArgs e)
@@ -137,7 +164,17 @@ namespace Paint
 
         private Shape CreatePointsShape(Brush fill, Brush stroke, double strokeThickness)
         {
-            int[] pointsX, pointsY;
+            var textBoxesX = StackPanelX.Children.OfType<TextBox>().ToList();
+            var textBoxesY = StackPanelY.Children.OfType<TextBox>().ToList();
+            int count = textBoxesX.Count - 1;
+            int[] pointsX = new int[count];
+            int[] pointsY = new int[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                pointsX[i] = Convert.ToInt32(textBoxesX[i].Text);
+                pointsY[i] = Convert.ToInt32(textBoxesY[i].Text);
+            }
             return drawerPointsShape.Create(pointsX, pointsY, fill, stroke, strokeThickness);
         }
 
