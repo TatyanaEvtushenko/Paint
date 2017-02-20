@@ -148,8 +148,7 @@ namespace Paint
             var strokeThickness = ((Line)((ComboBoxItem)ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness;
 
             var shape = isWidthDrawer ? CreateWidthShape(fill, stroke, strokeThickness) : CreatePointsShape(fill, stroke, strokeThickness);
-            shape.Draw(CanvasPaint);
-            //add to list
+            Painter.getInstance(CanvasPaint).AddNewShapeToList(shape);
         }
 
         private Shape CreateWidthShape(Brush fill, Brush stroke, double strokeThickness)
