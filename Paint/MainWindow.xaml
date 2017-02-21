@@ -108,9 +108,9 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Background="{StaticResource ResourceKey=ToolBrush}" HorizontalAlignment="Stretch" Margin="2">
-                                    <TextBlock Text="{Binding Path=Description}"></TextBlock>
-                                    <TextBlock Foreground="{Binding Path=Fill}"> Fill </TextBlock>
-                                    <TextBlock Foreground="{Binding Path=Stroke}"> Stroke</TextBlock>
+                                    <TextBlock Text="{Binding Path=Description}" Margin="2 0"></TextBlock>
+                                    <TextBlock Foreground="{Binding Path=Fill}" Margin="2 0"> Fill </TextBlock>
+                                    <TextBlock Foreground="{Binding Path=Stroke}" Margin="2 0"> Stroke</TextBlock>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

@@ -94,7 +94,13 @@ namespace Paint
             TextBoxX.Text = TextBoxY.Text = TextBoxWidth.Text = TextBoxHeight.Text = TextBoxAngle.Text = "";
         }
 
-        private void CleanPointsTextBoxes() { }
+        private void CleanPointsTextBoxes()
+        {
+            StackPanelX.Children.Clear();
+            StackPanelY.Children.Clear();
+            StackPanelX.Children.Add(CreatePointTextBox());
+            StackPanelY.Children.Add(CreatePointTextBox());
+        }
 
         private void ChangeWidthTextBoxes(object sender, TextChangedEventArgs e)
         {
