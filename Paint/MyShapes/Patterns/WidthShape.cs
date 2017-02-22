@@ -20,9 +20,4 @@ namespace Paint
             Angle = angle;
         }
     }
-
-    abstract class WidthShapeDrawer
-    {
-        public abstract Shape Create(double x, double y, int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness);
-    }
 }

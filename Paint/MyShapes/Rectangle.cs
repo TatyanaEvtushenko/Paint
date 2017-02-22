@@ -26,7 +26,7 @@ namespace Paint
         }
     }
 
-    class RectangleDrawer : WidthShapeDrawer
+    class RectangleDrawer : ShapeDrawer
     {
         public override Shape Create(double x, double y, int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness)
         {

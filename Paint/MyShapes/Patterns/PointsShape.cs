@@ -20,9 +20,4 @@ namespace Paint
                 Points.Add(new Point(pointsX[i], pointsY[i]));
         }
     }
-
-    abstract class PointsShapeDrawer
-    {
-        public abstract Shape Create(int[] pointsX, int[] pointsY, Brush fill, Brush stroke, double strokeThickness);
-    }
 }

@@ -25,7 +25,7 @@ namespace Paint
         }
     }
 
-    class PolylineDrawer : PointsShapeDrawer
+    class PolylineDrawer : ShapeDrawer
     {
         public override Shape Create(int[] pointsX, int[] pointsY, Brush fill, Brush stroke, double strokeThickness)
         {

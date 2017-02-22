@@ -10,9 +10,8 @@ namespace Paint
 {
     public partial class MainWindow : Window
     {
-        private bool isFillPointer, isWidthDrawer;
-        private WidthShapeDrawer drawerWidthShape;
-        private PointsShapeDrawer drawerPointsShape;
+        private bool isFillPointer;
+        private ShapeDrawer drawer;
        
         public MainWindow()
         {
@@ -59,27 +58,14 @@ namespace Paint
                 case "ComboBoxItemRectangle":
                 case "ComboBoxItemRoundRectangle":
                 case "ComboBoxItemEllipse":
-                    isWidthDrawer = true;
+                    ChangeStackPanelVisibility(StackPanelPosition, StackPanelPoints);
+                    CleanWidthTextBoxes();
                     break;
                 case "ComboBoxItemPolyline":
                 case "ComboBoxItemPolygon":
-                    isWidthDrawer = false;
+                    ChangeStackPanelVisibility(StackPanelPoints, StackPanelPosition);
+                    CleanPointsTextBoxes();
                     break;
-            }
-            ChangeDrawer();
-        }
-
-        private void ChangeDrawer()
-        {
-            if (isWidthDrawer)
-            {
-                ChangeStackPanelVisibility(StackPanelPosition, StackPanelPoints);
-                CleanWidthTextBoxes();
-            }
-            else
-            {
-                ChangeStackPanelVisibility(StackPanelPoints, StackPanelPosition);
-                CleanPointsTextBoxes();
             }
         }
 
@@ -153,7 +139,7 @@ namespace Paint
             var stroke = TextBlockContour.Foreground;
             var strokeThickness = ((Line)((ComboBoxItem)ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness;
 
-            var shape = isWidthDrawer ? CreateWidthShape(fill, stroke, strokeThickness) : CreatePointsShape(fill, stroke, strokeThickness);
+            var shape = StackPanelPoints.Visibility == Visibility.Hidden ? CreateWidthShape(fill, stroke, strokeThickness) : CreatePointsShape(fill, stroke, strokeThickness);
             Painter.getInstance(CanvasPaint).AddNewShapeToList(shape);
             ChangeStepButtonEnableds();
         }
@@ -165,7 +151,7 @@ namespace Paint
             int width = Convert.ToInt32(TextBoxWidth.Text);
             int height = Convert.ToInt32(TextBoxHeight.Text);
             int angle = Convert.ToInt32(TextBoxAngle.Text);
-            return drawerWidthShape.Create(x, y, width, height, angle, fill, stroke, strokeThickness);
+            return drawer.Create(x, y, width, height, angle, fill, stroke, strokeThickness);
         }
 
         private Shape CreatePointsShape(Brush fill, Brush stroke, double strokeThickness)
@@ -181,32 +167,32 @@ namespace Paint
                 pointsX[i] = Convert.ToInt32(textBoxesX[i].Text);
                 pointsY[i] = Convert.ToInt32(textBoxesY[i].Text);
             }
-            return drawerPointsShape.Create(pointsX, pointsY, fill, stroke, strokeThickness);
+            return drawer.Create(pointsX, pointsY, fill, stroke, strokeThickness);
         }
 
         private void SelecteComboBoxItemEllips(object sender, RoutedEventArgs e)
         {
-            drawerWidthShape = new EllipseDrawer(); 
+            drawer = new EllipseDrawer(); 
         }
 
         private void SelecteComboBoxItemRectangle(object sender, RoutedEventArgs e)
         {
-            drawerWidthShape = new RectangleDrawer();
+            drawer = new RectangleDrawer();
         }
 
         private void SelecteComboBoxItemRoundRectangle(object sender, RoutedEventArgs e)
         {
-            drawerWidthShape = new RoundRectangleDrawer();
+            drawer = new RoundRectangleDrawer();
         }
 
         private void SelecteComboBoxItemPolyline(object sender, RoutedEventArgs e)
         {
-            drawerPointsShape = new PolylineDrawer();
+            drawer = new PolylineDrawer();
         }
 
         private void SelecteComboBoxItemPolygon(object sender, RoutedEventArgs e)
         {
-            drawerPointsShape = new PolygonDrawer();
+            drawer = new PolygonDrawer();
         }
 
         private void GoToForwardStep(object sender, RoutedEventArgs e)

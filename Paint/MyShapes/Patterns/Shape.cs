@@ -28,4 +28,11 @@ namespace Paint
             canvas.Children.Add(shape);
         }
     }
+
+    class ShapeDrawer
+    {
+        public virtual Shape Create(double x, double y, int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness) { return null; }
+
+        public virtual Shape Create(int[] pointsX, int[] pointsY, Brush fill, Brush stroke, double strokeThickness) { return null; }
+    }
 }

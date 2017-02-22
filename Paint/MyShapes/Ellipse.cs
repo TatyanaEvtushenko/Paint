@@ -26,7 +26,7 @@ namespace Paint
         }
     }
 
-    class EllipseDrawer : WidthShapeDrawer
+    class EllipseDrawer : ShapeDrawer
     {
         public override Shape Create(double x, double y, int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness)
         {
