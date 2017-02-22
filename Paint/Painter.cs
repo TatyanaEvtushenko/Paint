@@ -22,6 +22,8 @@ namespace Paint
             buffer = new Stack<Shape>();
         }
 
+        public static Painter Instance { get; set; }
+
         public static Painter getInstance(Canvas canvas)
         {
             if (instance == null)
