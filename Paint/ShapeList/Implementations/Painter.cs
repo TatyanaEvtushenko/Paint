@@ -1,19 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
+using Paint.Shapes;
 
-namespace Paint
+namespace Paint.ShapeList.Implementations
 {
-    class Painter
+    class Painter : IShapeList
     {
-        private static Painter instance;
+        private static Painter painter;
         private Stack<Shape> buffer;
         private Canvas canvas;
 
         public List<Shape> ShapesList { get; set; }
+
+        public bool CanGoToForwardStep => buffer.Count > 0;
+        public bool CanGoToBackStep => ShapesList.Count > 0;
+        public bool CanClean => ShapesList.Count > 0;
 
         private Painter(Canvas canvasPainter)
         {
@@ -22,22 +24,18 @@ namespace Paint
             buffer = new Stack<Shape>();
         }
 
-        public static Painter Instance { get; set; }
-
-        public static Painter getInstance(Canvas canvas)
+        public static Painter GetPainter(Canvas canvas)
         {
-            if (instance == null)
-                instance = new Painter(canvas); 
-            return instance;
+            return painter ?? (painter = new Painter(canvas));
         }
 
-        public void DrawShapesList()
+        public void DrawAll()
         {
             foreach (var shape in ShapesList)
                 shape.Draw(canvas);
         }
 
-        public void Clean()
+        public void CleanAll()
         {
             ShapesList = new List<Shape>();
             canvas.Children.Clear();
@@ -46,8 +44,20 @@ namespace Paint
         public void AddNewShapeToList(Shape shape)
         {
             AddToList(shape);
-            if (CanGoToForwardStep())
+            if (CanGoToForwardStep)
                 buffer = new Stack<Shape>();
+        }
+
+        public void GoToForwardStep()
+        {
+            var shape = buffer.Pop();
+            AddToList(shape);       
+        }
+
+        public void GoToBackStep()
+        {
+            var shape = RemoveFromList();
+            buffer.Push(shape);
         }
 
         private void AddToList(Shape shape)
@@ -62,33 +72,6 @@ namespace Paint
             ShapesList.Remove(shape);
             canvas.Children.RemoveAt(canvas.Children.Count - 1);
             return shape;
-        }
-
-        public bool CanGoToForwardStep()
-        {
-            return buffer.Count > 0;
-        }
-
-        public bool CanGoToBackStep()
-        {
-            return ShapesList.Count > 0;
-        }
-
-        public bool CanClean()
-        {
-            return ShapesList.Count > 0;
-        }
-
-        public void GoToForwardStep()
-        {
-            var shape = buffer.Pop();
-            AddToList(shape);       
-        }
-
-        public void GoToBackStep()
-        {
-            var shape = RemoveFromList();
-            buffer.Push(shape);
         }
     }
 }

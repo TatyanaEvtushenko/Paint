@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
-namespace Paint
+namespace Paint.Shapes.PointShapes
 {
     abstract class PointsShape : Shape
     {
         public PointCollection Points { get; set; }
 
-        public PointsShape(int[] pointsX, int[] pointsY, Brush fill, Brush stroke, double strokeThickness) 
+        protected PointsShape(int[] pointsX, int[] pointsY, Brush fill, Brush stroke, double strokeThickness) 
             : base(fill, stroke, strokeThickness)
         {
             Points = new PointCollection();

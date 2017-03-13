@@ -27,13 +27,47 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
+                    <Grid Grid.Column="0" Name="GridColor">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Name="TextBlockFill" FontWeight="ExtraBlack" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▼ Fill</TextBlock>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Name="TextBlockFill" FontWeight="ExtraBlack" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▼ Fill</TextBlock>
                         <StackPanel Grid.Row="1" Name="StackPanelColors" Orientation="Horizontal" Width="Auto" HorizontalAlignment="Center">
                             <Button Background="Black" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
                             <Button Background="#FF5A5A5A" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
@@ -65,7 +99,7 @@
                             <Button Background="#FFFF0093" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
                             <Button Background="#FFFF6777" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
                         </StackPanel>
-                        <TextBlock Grid.Row="2" HorizontalAlignment="Center" Name="TextBlockContour" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▲ Contour</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Name="TextBlockContour" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▲ Contour</TextBlock>
                     </Grid>
                     <ComboBox Name="ComboBoxStrokeThickness" Grid.Column="1" Margin="5" VerticalAlignment="Center" Padding="10">
                         <ComboBoxItem>

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Shape = Paint.Shapes.Shape;
 
 namespace Paint
 {
@@ -44,6 +45,7 @@ namespace Paint
 
         private void ClickColorButton(object sender, RoutedEventArgs e)
         {
+            TextBlockFill.SetValue(Grid.ColumnProperty, 3);
             var button = (Button)sender;
             var pointer = isFillPointer ? TextBlockFill : TextBlockContour;
             pointer.Foreground = button.Background;

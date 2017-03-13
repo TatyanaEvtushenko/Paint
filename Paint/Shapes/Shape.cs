@@ -1,18 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using library = System.Windows.Shapes;
 
-namespace Paint
+namespace Paint.Shapes
 {
-    abstract class Shape
+    abstract class Shape : IShape
     {
         public Brush Fill { get; set; }
         public Brush Stroke { get; set; }
         public double StrokeThickness { get; set; }
         public string Description { get; set; }
 
-        public Shape(Brush fill, Brush stroke, double strokeThickness)
+        protected Shape(Brush fill, Brush stroke, double strokeThickness)
         {
             Fill = fill;
             Stroke = stroke;
@@ -27,12 +26,5 @@ namespace Paint
             var shape = CreateShapeForDrawing();
             canvas.Children.Add(shape);
         }
-    }
-
-    class ShapeDrawer
-    {
-        public virtual Shape Create(double x, double y, int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness) { return null; }
-
-        public virtual Shape Create(int[] pointsX, int[] pointsY, Brush fill, Brush stroke, double strokeThickness) { return null; }
     }
 }

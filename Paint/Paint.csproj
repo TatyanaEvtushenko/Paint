@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,15 +56,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="MyShapes\Ellipse.cs" />
-    <Compile Include="Painter.cs" />
-    <Compile Include="MyShapes\Patterns\PointsShape.cs" />
-    <Compile Include="MyShapes\Polygon.cs" />
-    <Compile Include="MyShapes\Polyline.cs" />
-    <Compile Include="MyShapes\Rectangle.cs" />
-    <Compile Include="MyShapes\RoundRectangle.cs" />
-    <Compile Include="MyShapes\Patterns\Shape.cs" />
-    <Compile Include="MyShapes\Patterns\WidthShape.cs" />
+    <Compile Include="Factory\IFactory.cs" />
+    <Compile Include="Factory\Implementations\EllipseFactory.cs" />
+    <Compile Include="Factory\Implementations\PolygonFactory.cs" />
+    <Compile Include="Factory\Implementations\PolylineFactory.cs" />
+    <Compile Include="Factory\Implementations\RectangleFactory.cs" />
+    <Compile Include="Factory\Implementations\RoundRectangleFactory.cs" />
+    <Compile Include="ShapeList\IShapeList.cs" />
+    <Compile Include="ShapeParams.cs" />
+    <Compile Include="Shapes\WidthShapes\Implementations\Ellipse.cs" />
+    <Compile Include="ShapeList\Implementations\Painter.cs" />
+    <Compile Include="Shapes\PointShapes\PointsShape.cs" />
+    <Compile Include="Shapes\PointShapes\Implementations\Polygon.cs" />
+    <Compile Include="Shapes\PointShapes\Implementations\Polyline.cs" />
+    <Compile Include="Shapes\WidthShapes\Implementations\Rectangle.cs" />
+    <Compile Include="Shapes\WidthShapes\Implementations\RoundRectangle.cs" />
+    <Compile Include="Shapes\Shape.cs" />
+    <Compile Include="Shapes\WidthShapes\WidthShape.cs" />
+    <Compile Include="Serializer\Implementations\Serializer.cs" />
+    <Compile Include="Serializer\ISerializer.cs" />
+    <Compile Include="Shapes\IShape.cs" />
     <Page Include="Dictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -108,6 +120,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

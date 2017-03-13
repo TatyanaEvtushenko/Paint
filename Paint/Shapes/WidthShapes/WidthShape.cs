@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace Paint
+namespace Paint.Shapes.WidthShapes
 {
     abstract class WidthShape : Shape
     {
@@ -10,7 +10,7 @@ namespace Paint
         public double X { get; set; }
         public double Y { get; set; }
 
-        public WidthShape(double x, double y, int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness) 
+        protected WidthShape(double x, double y, int width, int height, int angle, Brush fill, Brush stroke, double strokeThickness) 
             : base(fill, stroke, strokeThickness)
         {
             X = x;
