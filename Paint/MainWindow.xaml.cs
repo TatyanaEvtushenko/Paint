@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using Paint.Factory;
 using Paint.Factory.Implementations;
 using Paint.Serializer;
 using Paint.Serializer.Implementations;
-using Paint.ShapeList;
 using Paint.ShapeList.Implementations;
 using Shape = Paint.Shapes.Shape;
 
@@ -24,7 +21,6 @@ namespace Paint
         private ISerializer<Painter> serializer;
         private OpenFileDialog openFileDialog;
         private SaveFileDialog saveFileDialog;
-   //     private System.Windows.Forms.ColorDialog colorDialog;
        
         public MainWindow()
         {
@@ -257,17 +253,17 @@ namespace Paint
 
         private void OpenShapeList(object sender, RoutedEventArgs e)
         {
+            try
+            {
                 if (openFileDialog.ShowDialog() == true)
                 {
                     var newShapeList = serializer.ReadFromFile(openFileDialog.FileName);
                     if (!painter.CanClean ||
                         painter.CanClean &&
                         MessageBox.Show("The current shape list will be deleted. Do you want to continue?") ==
-                        MessageBoxResult.Yes)
+                        MessageBoxResult.OK)
                     ChangeShapeList(newShapeList);
                 }
-            try
-            {
             }
             catch
             {

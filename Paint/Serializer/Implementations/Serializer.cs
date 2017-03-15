@@ -31,6 +31,8 @@ namespace Paint.Serializer.Implementations
 
         public void SaveToFile(T data, string fileName)
         {
+            if (File.Exists(fileName))
+                File.Delete(fileName);
             using (var stream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write))
             {
                 serializer.WriteObject(stream, data);

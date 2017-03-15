@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Paint"
         mc:Ignorable="d"
-        Title="New paint" Height="650" Width="920">
+        Title="New paint" Height="750" Width="1020">
     
     <Window.Resources>
         <ResourceDictionary Source="Dictionary.xaml"/>
@@ -35,7 +35,6 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -97,8 +96,6 @@
                         <Button Grid.Row="1" Grid.Column="27" Background="#FFE00089" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
                         <Button Grid.Row="1" Grid.Column="28" Background="#FFFF0093" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
                         <Button Grid.Row="1" Grid.Column="29" Background="#FFFF6777" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                        <Button Grid.Row="1" Grid.Column="30" Background="#FFFFFFFF" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                        <ComboBox Grid.Row="1" Grid.Column="31">Other color</ComboBox>
                         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Name="TextBlockContour" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▲ Contour</TextBlock>
                     </Grid>
                     <ComboBox Name="ComboBoxStrokeThickness" Grid.Column="1" Margin="5" VerticalAlignment="Center" Padding="10">
