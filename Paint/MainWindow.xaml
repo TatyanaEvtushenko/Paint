@@ -117,7 +117,7 @@
                     </ComboBox>
                 </Grid>
             </GroupBox>
-            <Canvas Name="CanvasPaint" Grid.Row="1" Background="White"></Canvas>
+            <Canvas Name="CanvasPaint" Grid.Row="1" Background="White" MouseLeftButtonUp="EndPaintNewShape" MouseLeftButtonDown="BeginPaintNewShape" MouseMove="ChangeNewShape"></Canvas>
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>

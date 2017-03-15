@@ -2,35 +2,28 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Paint.Factory;
 
 namespace Paint.Shapes
 {
-    [DataContract]
     abstract class Shape : IShape
     {
-        [DataMember]
-        public Brush Fill { get; set; }
-        [DataMember]
-        public Brush Stroke { get; set; }
-        [DataMember]
-        public double StrokeThickness { get; set; }
-        [DataMember]
-        public string Description { get; set; }
+        public string Description => this.GetType().ToString();
+        public Brush Fill => ShapeForDrawing.Fill;
+        public Brush Stroke => ShapeForDrawing.Stroke;
+        public double StrokeThickness => ShapeForDrawing.StrokeThickness;
 
-        protected Shape(Brush fill, Brush stroke, double strokeThickness)
+        public Shape(ShapeParams param)
         {
-            Fill = fill;
-            Stroke = stroke;
-            StrokeThickness = strokeThickness;
-            Description = this.ToString();
+            Fill = param.Fill
         }
-
-        protected abstract FrameworkElement CreateShapeForDrawing();
 
         public void Draw(Canvas canvas)
         {
             var shape = CreateShapeForDrawing();
             canvas.Children.Add(shape);
         }
+
+        public abstract System.Windows.Shapes.Shape CreateShapeForDrawing();
     }
 }

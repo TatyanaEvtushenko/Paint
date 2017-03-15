@@ -1,4 +1,5 @@
-﻿using Paint.Shapes;
+﻿using System.Windows;
+using Paint.Shapes;
 
 namespace Paint.Factory
 {

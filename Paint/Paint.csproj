@@ -59,11 +59,22 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Factory\IFactory.cs" />
-    <Compile Include="Factory\Implementations\EllipseFactory.cs" />
-    <Compile Include="Factory\Implementations\PolygonFactory.cs" />
-    <Compile Include="Factory\Implementations\PolylineFactory.cs" />
-    <Compile Include="Factory\Implementations\RectangleFactory.cs" />
-    <Compile Include="Factory\Implementations\RoundRectangleFactory.cs" />
+    <Compile Include="Factory\WidthShapeFactory\Implementations\EllipseFactory.cs" />
+    <Compile Include="Factory\PointsShapeFactory\Implementations\PolygonFactory.cs" />
+    <Compile Include="Factory\PointsShapeFactory\Implementations\PolylineFactory.cs" />
+    <Compile Include="Factory\WidthShapeFactory\Implementations\RectangleFactory.cs" />
+    <Compile Include="Factory\WidthShapeFactory\Implementations\RoundRectangleFactory.cs" />
+    <Compile Include="Factory\PointsShapeFactory\PointsShapeFactory.cs" />
+    <Compile Include="Factory\WidthShapeFactory\WidthShapeFactory.cs" />
+    <Compile Include="ShapesForDrawing\PointsShapeForDrawing\Implementations\PolygonForDrawing.cs" />
+    <Compile Include="ShapesForDrawing\PointsShapeForDrawing\Implementations\PolylineForDrawing.cs" />
+    <Compile Include="ShapesForDrawing\PointsShapeForDrawing\PointsShapeForDrawing.cs" />
+    <Compile Include="ShapesForDrawing\WidthShapeForDrawing\Implementations\EllipseForDrawing.cs" />
+    <Compile Include="ShapesForDrawing\WidthShapeForDrawing\Implementations\RectangleForDrawing.cs" />
+    <Compile Include="ShapesForDrawing\WidthShapeForDrawing\Implementations\RoundRectangleForDrawing.cs" />
+    <Compile Include="ShapesForDrawing\WidthShapeForDrawing\WidthShapeForDrawing.cs" />
+    <Compile Include="ShapesForDrawing\IShapeForDrawing.cs" />
+    <Compile Include="ShapesForDrawing\ShapeForDrawing.cs" />
     <Compile Include="ShapeList\IShapeList.cs" />
     <Compile Include="ShapeParams.cs" />
     <Compile Include="Shapes\WidthShapes\Implementations\Ellipse.cs" />

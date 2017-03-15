@@ -2,10 +2,13 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using Paint.Factory;
 using Paint.Factory.Implementations;
+using Paint.Factory.WidthShapeFactory.Implementations;
 using Paint.Serializer;
 using Paint.Serializer.Implementations;
 using Paint.ShapeList.Implementations;
@@ -15,12 +18,17 @@ namespace Paint
 {
     public partial class MainWindow : Window
     {
-        private bool isFillPointer;
         private IShapeFactory factory;
         private Painter painter;
         private ISerializer<Painter> serializer;
         private OpenFileDialog openFileDialog;
         private SaveFileDialog saveFileDialog;
+
+        private bool isFillPointer;
+        private Point lastPoint;
+        private bool isPaint;
+        private ShapeParams param;
+        private System.Windows.Shapes.Shape paintedShape;
        
         public MainWindow()
         {
@@ -37,6 +45,7 @@ namespace Paint
             serializer = new JsonSerializer<Painter>();
             openFileDialog = new OpenFileDialog();
             saveFileDialog = new SaveFileDialog();
+            param = new ShapeParams();
         }
 
         private void ShowError(Exception exc)
@@ -68,12 +77,12 @@ namespace Paint
             if (isFillPointer)
             {
                 TextBlockFill.SetValue(Grid.ColumnProperty, column);
-                TextBlockFill.Foreground = button.Background;
+                TextBlockFill.Foreground = param.Fill = button.Background;
             }
             else
             {
                 TextBlockContour.SetValue(Grid.ColumnProperty, column);
-                TextBlockContour.Foreground = button.Background;
+                TextBlockContour.Foreground = param.Stroke = button.Background;
             }
         }
 
@@ -161,6 +170,13 @@ namespace Paint
             return Int32.TryParse(str, out num) && num >= 0;
         }
 
+        private void InitializeParam()
+        {
+            param.Fill = TextBlockFill.Foreground;
+            param.Stroke = TextBlockContour.Foreground;
+            param.StrokeThickness = ((Line) ((ComboBoxItem) ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness;
+        }
+
         private void AddShape(object sender, RoutedEventArgs e)
         {
             var shapeParams = new ShapeParams
@@ -174,17 +190,16 @@ namespace Paint
             ChangeStepButtonEnableds();
         }
 
-        private Shape CreateWidthShape(ShapeParams shapeParams)
+        private void CreateWidthShape()
         {
-            shapeParams.X = Convert.ToDouble(TextBoxX.Text);
-            shapeParams.Y = Convert.ToDouble(TextBoxY.Text);
-            shapeParams.Width = Convert.ToInt32(TextBoxWidth.Text);
-            shapeParams.Height = Convert.ToInt32(TextBoxHeight.Text);
-            shapeParams.Angle = Convert.ToInt32(TextBoxAngle.Text);
-            return factory.Create(shapeParams);
+            param.X = Convert.ToDouble(TextBoxX.Text);
+            param.Y = Convert.ToDouble(TextBoxY.Text);
+            param.Width = Convert.ToInt32(TextBoxWidth.Text);
+            param.Height = Convert.ToInt32(TextBoxHeight.Text);
+            param.Angle = Convert.ToInt32(TextBoxAngle.Text);
         }
 
-        private Shape CreatePointsShape(ShapeParams shapeParams)
+        private void CreatePointsShape(ShapeParams shapeParams)
         {
             var textBoxesX = StackPanelX.Children.OfType<TextBox>().ToList();
             var textBoxesY = StackPanelY.Children.OfType<TextBox>().ToList();
@@ -292,6 +307,40 @@ namespace Paint
             {
                 ShowError(exc);
             }
+        }
+
+        private void BeginPaintNewShape(object sender, MouseButtonEventArgs e)
+        {
+            if (!isPaint)
+            {
+                isPaint = true;
+                var canvas = (Canvas)sender;
+                lastPoint = e.GetPosition(canvas);
+                AddNewShape(canvas, e);
+            }
+        }
+
+        private void ChangeNewShape(object sender, MouseEventArgs e)
+        {
+            if (isPaint)
+            {
+                var canvas = (Canvas)sender;
+                canvas.Children.RemoveAt(canvas.Children.Count - 1);
+                AddNewShape(canvas, e);
+            }
+        }
+
+        private void AddNewShape(Canvas canvas, MouseEventArgs e)
+        {
+            paintedShape = factory.C
+                
+                (lastPoint, e.GetPosition(canvas));
+            canvas.Children.Add(paintedShape);
+        }
+
+        private void EndPaintNewShape(object sender, MouseButtonEventArgs e)
+        {
+            isPaint = false;
         }
     }
 }
