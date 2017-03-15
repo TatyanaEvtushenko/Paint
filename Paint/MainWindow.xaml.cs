@@ -5,6 +5,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Microsoft.Win32;
+using Paint.Factory;
+using Paint.Factory.Implementations;
+using Paint.Serializer;
+using Paint.Serializer.Implementations;
+using Paint.ShapeList;
+using Paint.ShapeList.Implementations;
 using Shape = Paint.Shapes.Shape;
 
 namespace Paint
@@ -12,7 +19,12 @@ namespace Paint
     public partial class MainWindow : Window
     {
         private bool isFillPointer;
-        private ShapeDrawer drawer;
+        private IShapeFactory factory;
+        private Painter painter;
+        private ISerializer<Painter> serializer;
+        private OpenFileDialog openFileDialog;
+        private SaveFileDialog saveFileDialog;
+   //     private System.Windows.Forms.ColorDialog colorDialog;
        
         public MainWindow()
         {
@@ -22,13 +34,23 @@ namespace Paint
 
         private void InitializeParams()
         {
-            ComboBoxItemEllipse.IsSelected = true;
             isFillPointer = true;
+            ComboBoxItemEllipse.IsSelected = true;
+            factory = new EllipseFactory();
+            painter = Painter.GetPainter(CanvasPaint);
+            serializer = new JsonSerializer<Painter>();
+            openFileDialog = new OpenFileDialog();
+            saveFileDialog = new SaveFileDialog();
+        }
+
+        private void ShowError(Exception exc)
+        {
+            MessageBox.Show(exc.Message, "ERROR");
         }
 
         private void ClickPointerTextBlock(object sender, RoutedEventArgs e)
         {
-            var content = ((TextBlock)sender).Name.ToString();
+            var content = ((TextBlock)sender).Name;
             if (isFillPointer && content != "TextBlockFill" || !isFillPointer && content == "TextBlockFill")
             {
                 isFillPointer = content == "TextBlockFill";
@@ -45,10 +67,18 @@ namespace Paint
 
         private void ClickColorButton(object sender, RoutedEventArgs e)
         {
-            TextBlockFill.SetValue(Grid.ColumnProperty, 3);
             var button = (Button)sender;
-            var pointer = isFillPointer ? TextBlockFill : TextBlockContour;
-            pointer.Foreground = button.Background;
+            var column = button.GetValue(Grid.ColumnProperty);
+            if (isFillPointer)
+            {
+                TextBlockFill.SetValue(Grid.ColumnProperty, column);
+                TextBlockFill.Foreground = button.Background;
+            }
+            else
+            {
+                TextBlockContour.SetValue(Grid.ColumnProperty, column);
+                TextBlockContour.Foreground = button.Background;
+            }
         }
 
         private void ChangeShape(object sender, SelectionChangedEventArgs e)
@@ -125,7 +155,7 @@ namespace Paint
         private TextBox CreatePointTextBox()
         {
             var textBox = new TextBox();
-            textBox.TextChanged += new TextChangedEventHandler(ChangePointsTextBoxes);
+            textBox.TextChanged += ChangePointsTextBoxes;
             return textBox;
         }
 
@@ -137,91 +167,135 @@ namespace Paint
 
         private void AddShape(object sender, RoutedEventArgs e)
         {
-            var fill = TextBlockFill.Foreground;
-            var stroke = TextBlockContour.Foreground;
-            var strokeThickness = ((Line)((ComboBoxItem)ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness;
-
-            var shape = StackPanelPoints.Visibility == Visibility.Hidden ? CreateWidthShape(fill, stroke, strokeThickness) : CreatePointsShape(fill, stroke, strokeThickness);
-            Painter.getInstance(CanvasPaint).AddNewShapeToList(shape);
+            var shapeParams = new ShapeParams
+            {
+                Fill = TextBlockFill.Foreground,
+                Stroke = TextBlockContour.Foreground,
+                StrokeThickness = ((Line)((ComboBoxItem) ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness
+            };
+            var shape = StackPanelPoints.Visibility == Visibility.Hidden ? CreateWidthShape(shapeParams) : CreatePointsShape(shapeParams);
+            painter.AddNewShapeToList(shape);
             ChangeStepButtonEnableds();
         }
 
-        private Shape CreateWidthShape(Brush fill, Brush stroke, double strokeThickness)
+        private Shape CreateWidthShape(ShapeParams shapeParams)
         {
-            double x = Convert.ToDouble(TextBoxX.Text);
-            double y = Convert.ToDouble(TextBoxY.Text);
-            int width = Convert.ToInt32(TextBoxWidth.Text);
-            int height = Convert.ToInt32(TextBoxHeight.Text);
-            int angle = Convert.ToInt32(TextBoxAngle.Text);
-            return drawer.Create(x, y, width, height, angle, fill, stroke, strokeThickness);
+            shapeParams.X = Convert.ToDouble(TextBoxX.Text);
+            shapeParams.Y = Convert.ToDouble(TextBoxY.Text);
+            shapeParams.Width = Convert.ToInt32(TextBoxWidth.Text);
+            shapeParams.Height = Convert.ToInt32(TextBoxHeight.Text);
+            shapeParams.Angle = Convert.ToInt32(TextBoxAngle.Text);
+            return factory.Create(shapeParams);
         }
 
-        private Shape CreatePointsShape(Brush fill, Brush stroke, double strokeThickness)
+        private Shape CreatePointsShape(ShapeParams shapeParams)
         {
             var textBoxesX = StackPanelX.Children.OfType<TextBox>().ToList();
             var textBoxesY = StackPanelY.Children.OfType<TextBox>().ToList();
             int count = textBoxesX.Count - 1;
-            int[] pointsX = new int[count];
-            int[] pointsY = new int[count];
+            shapeParams.PointsX = new int[count];
+            shapeParams.PointsY = new int[count];
 
             for (int i = 0; i < count; i++)
             {
-                pointsX[i] = Convert.ToInt32(textBoxesX[i].Text);
-                pointsY[i] = Convert.ToInt32(textBoxesY[i].Text);
+                shapeParams.PointsX[i] = Convert.ToInt32(textBoxesX[i].Text);
+                shapeParams.PointsY[i] = Convert.ToInt32(textBoxesY[i].Text);
             }
-            return drawer.Create(pointsX, pointsY, fill, stroke, strokeThickness);
+            return factory.Create(shapeParams);
         }
 
         private void SelecteComboBoxItemEllips(object sender, RoutedEventArgs e)
         {
-            drawer = new EllipseDrawer(); 
+            factory = new EllipseFactory(); 
         }
 
         private void SelecteComboBoxItemRectangle(object sender, RoutedEventArgs e)
         {
-            drawer = new RectangleDrawer();
+            factory = new RectangleFactory();
         }
 
         private void SelecteComboBoxItemRoundRectangle(object sender, RoutedEventArgs e)
         {
-            drawer = new RoundRectangleDrawer();
+            factory = new RoundRectangleFactory();
         }
 
         private void SelecteComboBoxItemPolyline(object sender, RoutedEventArgs e)
         {
-            drawer = new PolylineDrawer();
+            factory = new PolylineFactory();
         }
 
         private void SelecteComboBoxItemPolygon(object sender, RoutedEventArgs e)
         {
-            drawer = new PolygonDrawer();
+            factory = new PolygonFactory();
         }
 
         private void GoToForwardStep(object sender, RoutedEventArgs e)
         {
-            Painter.getInstance(CanvasPaint).GoToForwardStep();
+            painter.GoToForwardStep();
             ChangeStepButtonEnableds();
         }
 
         private void GoToBackStep(object sender, RoutedEventArgs e)
         {
-            Painter.getInstance(CanvasPaint).GoToBackStep();
+            painter.GoToBackStep();
             ChangeStepButtonEnableds();
         }
 
         private void CleanAll(object sender, RoutedEventArgs e)
         {
-            Painter.getInstance(CanvasPaint).Clean();
+            painter.CleanAll();
             ChangeStepButtonEnableds();
         }
 
         private void ChangeStepButtonEnableds()
         {
-            var painter = Painter.getInstance(CanvasPaint);
-            ButtonClean.IsEnabled = painter.CanClean();
-            ButtonForward.IsEnabled = painter.CanGoToForwardStep();
-            ButtonBack.IsEnabled = painter.CanGoToBackStep();
-            ListBoxShapes.ItemsSource = Painter.getInstance(CanvasPaint).ShapesList.ToList();
+            ButtonClean.IsEnabled = ButtonSave.IsEnabled = painter.CanClean;
+            ButtonForward.IsEnabled = painter.CanGoToForwardStep;
+            ButtonBack.IsEnabled = painter.CanGoToBackStep;
+            ListBoxShapes.ItemsSource = painter.ShapesList.ToList();
+        }
+
+        private void OpenShapeList(object sender, RoutedEventArgs e)
+        {
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    var newShapeList = serializer.ReadFromFile(openFileDialog.FileName);
+                    if (!painter.CanClean ||
+                        painter.CanClean &&
+                        MessageBox.Show("The current shape list will be deleted. Do you want to continue?") ==
+                        MessageBoxResult.Yes)
+                    ChangeShapeList(newShapeList);
+                }
+            try
+            {
+            }
+            catch
+            {
+                ShowError(new Exception("File format is wrong."));
+            }
+        }
+
+        private void ChangeShapeList(Painter newShapeList)
+        {
+            painter.CleanAll();
+            painter.ShapesList = newShapeList.ShapesList;
+            painter.DrawAll();
+            ChangeStepButtonEnableds();
+        }
+
+        private void SaveShapeList(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    serializer.SaveToFile(painter, saveFileDialog.FileName);
+                }
+            }
+            catch(Exception exc)
+            {
+                ShowError(exc);
+            }
         }
     }
 }

@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Windows.Controls;
 using Paint.Shapes;
 
 namespace Paint.ShapeList.Implementations
 {
+    [DataContract]
     class Painter : IShapeList
     {
         private static Painter painter;
         private Stack<Shape> buffer;
-        private Canvas canvas;
-
+        public Canvas Canvas { get; set; }
+        [DataMember]
         public List<Shape> ShapesList { get; set; }
 
         public bool CanGoToForwardStep => buffer.Count > 0;
@@ -19,7 +21,7 @@ namespace Paint.ShapeList.Implementations
 
         private Painter(Canvas canvasPainter)
         {
-            canvas = canvasPainter;
+            Canvas = canvasPainter;
             ShapesList = new List<Shape>();
             buffer = new Stack<Shape>();
         }
@@ -32,13 +34,13 @@ namespace Paint.ShapeList.Implementations
         public void DrawAll()
         {
             foreach (var shape in ShapesList)
-                shape.Draw(canvas);
+                shape.Draw(Canvas);
         }
 
         public void CleanAll()
         {
             ShapesList = new List<Shape>();
-            canvas.Children.Clear();
+            Canvas.Children.Clear();
         }
 
         public void AddNewShapeToList(Shape shape)
@@ -63,14 +65,14 @@ namespace Paint.ShapeList.Implementations
         private void AddToList(Shape shape)
         {
             ShapesList.Add(shape);
-            shape.Draw(canvas);
+            shape.Draw(Canvas);
         }
 
         private Shape RemoveFromList()
         {
             var shape = ShapesList.Last<Shape>();
             ShapesList.Remove(shape);
-            canvas.Children.RemoveAt(canvas.Children.Count - 1);
+            Canvas.Children.RemoveAt(Canvas.Children.Count - 1);
             return shape;
         }
     }

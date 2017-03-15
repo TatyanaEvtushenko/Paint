@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using System.Runtime.Serialization;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Paint.Shapes.PointShapes.Implementations
 {
+    [DataContract]
     class Polygon : PointsShape
     {
         public Polygon(int[] pointsX, int[] pointsY, Brush fill, Brush stroke, double strokeThickness)

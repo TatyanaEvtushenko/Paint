@@ -67,39 +67,39 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Name="TextBlockFill" FontWeight="ExtraBlack" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▼ Fill</TextBlock>
-                        <StackPanel Grid.Row="1" Name="StackPanelColors" Orientation="Horizontal" Width="Auto" HorizontalAlignment="Center">
-                            <Button Background="Black" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FF5A5A5A" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FF969696" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
-                            <Button Background="#FFC2C0C0" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FFE7E7E7" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="White" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FF9C5A00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FF6B3A00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FF7A0D00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
-                            <Button Background="#FFD10101" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="Red" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FFFF8000" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FFFFC000" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FFFFEE00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FFCCEE09" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
-                            <Button Background="#FF67E200" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FF53B006" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FF046E09" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FF00DFBB" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FF00CBE8" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FF008ECD" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
-                            <Button Background="#FF0039D7" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FF4B00B3" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FF9300D0" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FFEB00FF" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FFD100AD" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FFE00089" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
-                            <Button Background="#FFFF0093" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                            <Button Background="#FFFF6777" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
-                        </StackPanel>
-                        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Name="TextBlockContour" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▲ Contour</TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Name="TextBlockFill" FontWeight="ExtraBlack" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▼ Fill</TextBlock>
+                        <Button Grid.Row="1" Grid.Column="1" Background="Black" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="2" Background="#FF5A5A5A" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="3" Background="#FF969696" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
+                        <Button Grid.Row="1" Grid.Column="4" Background="#FFC2C0C0" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="5" Background="#FFE7E7E7" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="6" Background="White" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="7" Background="#FF9C5A00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="8" Background="#FF6B3A00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="9" Background="#FF7A0D00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
+                        <Button Grid.Row="1" Grid.Column="10" Background="#FFD10101" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="11" Background="Red" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="12" Background="#FFFF8000" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="13" Background="#FFFFC000" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="14" Background="#FFFFEE00" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="15" Background="#FFCCEE09" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
+                        <Button Grid.Row="1" Grid.Column="16" Background="#FF67E200" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="17" Background="#FF53B006" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="18" Background="#FF046E09" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="19" Background="#FF00DFBB" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="20" Background="#FF00CBE8" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="21" Background="#FF008ECD" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
+                        <Button Grid.Row="1" Grid.Column="22" Background="#FF0039D7" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="23" Background="#FF4B00B3" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="24" Background="#FF9300D0" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="25" Background="#FFEB00FF" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="26" Background="#FFD100AD" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="27" Background="#FFE00089" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"/>
+                        <Button Grid.Row="1" Grid.Column="28" Background="#FFFF0093" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="29" Background="#FFFF6777" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <Button Grid.Row="1" Grid.Column="30" Background="#FFFFFFFF" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
+                        <ComboBox Grid.Row="1" Grid.Column="31">Other color</ComboBox>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Name="TextBlockContour" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▲ Contour</TextBlock>
                     </Grid>
                     <ComboBox Name="ComboBoxStrokeThickness" Grid.Column="1" Margin="5" VerticalAlignment="Center" Padding="10">
                         <ComboBoxItem>
@@ -132,6 +132,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10*"/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -152,6 +153,8 @@
                     <Button Name="ButtonBack" Grid.Column="0" Grid.Row="1" Click="GoToBackStep" IsEnabled="False">↻</Button>
                     <Button Name="ButtonForward" Grid.Column="1" Grid.Row="1" Click="GoToForwardStep" IsEnabled="False">↺</Button>
                     <Button Name="ButtonClean" Grid.Column="2" Grid.Row="1" Click="CleanAll" IsEnabled="False">Clean all</Button>
+                    <Button Name="ButtonOpen" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Click="OpenShapeList" IsEnabled="True">Open</Button>
+                    <Button Name="ButtonSave" Grid.Column="2" Grid.Row="2" Click="SaveShapeList" IsEnabled="False">Save</Button>
                 </Grid>
             </GroupBox>
             <GroupBox Grid.Row="0" Style="{StaticResource ResourceKey=HeadTextBlock}" Header="Properties">

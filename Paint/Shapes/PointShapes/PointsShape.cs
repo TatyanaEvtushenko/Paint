@@ -1,10 +1,13 @@
-﻿using System.Windows;
+﻿using System.Runtime.Serialization;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Paint.Shapes.PointShapes
 {
+    [DataContract]
     abstract class PointsShape : Shape
     {
+        [DataMember]
         public PointCollection Points { get; set; }
 
         protected PointsShape(int[] pointsX, int[] pointsY, Brush fill, Brush stroke, double strokeThickness) 
