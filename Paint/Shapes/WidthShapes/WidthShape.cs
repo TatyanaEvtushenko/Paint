@@ -7,9 +7,25 @@ namespace Paint.Shapes.WidthShapes
     [DataContract]
     abstract class WidthShape : Shape
     {
-        public double Width => ShapeForDrawing.Width;
-        public double Height => ShapeForDrawing.Height;
-        public double X => (double)ShapeForDrawing.GetValue(Canvas.LeftProperty);
-        public double Y => (double)ShapeForDrawing.GetValue(Canvas.TopProperty);
+        [DataMember]
+        public double Width { get; set; }
+        [DataMember]
+        public double Height { get; set; }
+        [DataMember]
+        public double Angle { get; set; }
+        [DataMember]
+        public double X { get; set; }
+        [DataMember]
+        public double Y { get; set; }
+
+        protected WidthShape(double x, double y, double width, double height, double angle, Brush fill, Brush stroke, double strokeThickness)
+            : base(fill, stroke, strokeThickness)
+        {
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
+            Angle = angle;
+        }
     }
 }

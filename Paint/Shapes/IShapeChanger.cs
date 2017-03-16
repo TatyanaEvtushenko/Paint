@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Paint.Factory.PointsShapeFactory
+namespace Paint.Shapes
 {
-    class PointsShapeFactory
+    interface IShapeChanger
     {
+        void ChangeShape(ShapeParams param);
     }
 }

@@ -14,16 +14,17 @@ namespace Paint.Factory.Implementations
             return new RoundRectangle(param.X, param.Y, param.Width, param.Height, param.Angle, param.Fill, param.Stroke, param.StrokeThickness);
         }
 
-        public FrameworkElement CreateShapeForDrawing(Point lastPoint, Point newPoint)
+        public System.Windows.Shapes.Shape CreateShapeForDrawing(ShapeParams param)
         {
             var shape = new System.Windows.Shapes.Rectangle
             {
-                Width = Math.Abs(newPoint.X - lastPoint.X),
-                Height = Math.Abs(newPoint.Y - lastPoint.Y),
+                Width = param.Width,
+                Height = param.Height,
+                RenderTransform = new RotateTransform { Angle = param.Angle },
                 Stroke = new SolidColorBrush(Colors.Black)
             };
-            shape.SetValue(Canvas.LeftProperty, lastPoint.X);
-            shape.SetValue(Canvas.TopProperty, lastPoint.Y);
+            shape.SetValue(Canvas.LeftProperty, param.X);
+            shape.SetValue(Canvas.TopProperty, param.Y);
             shape.RadiusX = shape.RadiusY = (shape.Height < shape.Width ? shape.Height : shape.Width) / 10;
             return shape;
         }

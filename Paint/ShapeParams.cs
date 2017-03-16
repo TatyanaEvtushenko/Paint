@@ -5,8 +5,7 @@ namespace Paint
     struct ShapeParams
     {
         public Brush Fill, Stroke;
-        public int[] PointsX, PointsY;
-        public double StrokeThickness, X, Y;
-        public int Width, Height, Angle;
+        public double[] PointsX, PointsY;
+        public double StrokeThickness, X, Y, Width, Height, Angle;
     }
 } 

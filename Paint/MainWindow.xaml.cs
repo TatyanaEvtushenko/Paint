@@ -8,7 +8,6 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using Paint.Factory;
 using Paint.Factory.Implementations;
-using Paint.Factory.WidthShapeFactory.Implementations;
 using Paint.Serializer;
 using Paint.Serializer.Implementations;
 using Paint.ShapeList.Implementations;
@@ -23,12 +22,14 @@ namespace Paint
         private ISerializer<Painter> serializer;
         private OpenFileDialog openFileDialog;
         private SaveFileDialog saveFileDialog;
+        private ShapeParams param;
+        private Point lastPoint;
 
         private bool isFillPointer;
-        private Point lastPoint;
-        private bool isPaint;
-        private ShapeParams param;
-        private System.Windows.Shapes.Shape paintedShape;
+        private bool isPaintNow;
+        private bool isWidthShape;
+        private int lastShapeIndex;
+        private int pointsCount;
        
         public MainWindow()
         {
@@ -36,16 +37,22 @@ namespace Paint
             InitializeParams();
         }
 
-        private void InitializeParams()
+        private void InitializeParams() 
         {
             isFillPointer = true;
             ComboBoxItemEllipse.IsSelected = true;
+            ComboBoxItemDefault.IsSelected = true;
             factory = new EllipseFactory();
             painter = Painter.GetPainter(CanvasPaint);
             serializer = new JsonSerializer<Painter>();
             openFileDialog = new OpenFileDialog();
             saveFileDialog = new SaveFileDialog();
-            param = new ShapeParams();
+            param = new ShapeParams
+            {
+                Fill = TextBlockFill.Foreground,
+                Stroke = TextBlockContour.Foreground,
+                StrokeThickness = ((Line)((ComboBoxItem)ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness
+            };
         }
 
         private void ShowError(Exception exc)
@@ -104,6 +111,8 @@ namespace Paint
                     CleanPointsTextBoxes();
                     break;
             }
+            isPaintNow = false;
+            isWidthShape = StackPanelPoints.Visibility == Visibility.Hidden;
         }
 
         private void ChangeStackPanelVisibility(StackPanel visible, StackPanel hidden)
@@ -127,12 +136,14 @@ namespace Paint
 
         private void ChangeWidthTextBoxes(object sender, TextChangedEventArgs e)
         {
-            int maxHeight = (int)CanvasPaint.ActualHeight;
-            int maxWidth = (int)CanvasPaint.ActualWidth;
+            var maxHeight = CanvasPaint.ActualHeight;
+            var maxWidth = CanvasPaint.ActualWidth;
 
             ButtonAddShape.IsEnabled = CheckIsStrPositiveNumber(TextBoxAngle.Text) && CheckIsStrPositiveNumber(TextBoxHeight.Text)
             && CheckIsStrPositiveNumber(TextBoxWidth.Text) && CheckIsStrPositiveNumber(TextBoxX.Text) && CheckIsStrPositiveNumber(TextBoxY.Text)
-            && Convert.ToInt32(TextBoxX.Text) < maxWidth && Convert.ToInt32(TextBoxY.Text) < maxHeight;
+            && Convert.ToDouble(TextBoxX.Text) < maxWidth && Convert.ToDouble(TextBoxY.Text) < maxHeight;
+
+            ShowTempShape();
         }
 
         private void ChangePointsTextBoxes(object sender, TextChangedEventArgs e)
@@ -155,6 +166,20 @@ namespace Paint
             }
             else
                 ButtonAddShape.IsEnabled = textBoxesX[last].Text == "" && textBoxesY[last].Text == "";
+
+            ShowTempShape();
+        }
+
+        private void ShowTempShape()
+        {
+            if (!ButtonAddShape.IsEnabled || !isPaintNow)
+                return;
+            if (isWidthShape)
+                InitializeWidthShapeParams();
+            else
+                InitializePointsShapeParams();
+            var shape = factory.CreateShapeForDrawing(param);
+            CanvasPaint.Children.Add(shape);
         }
 
         private TextBox CreatePointTextBox()
@@ -166,53 +191,55 @@ namespace Paint
 
         private bool CheckIsStrPositiveNumber(string str)
         {
-            int num;
-            return Int32.TryParse(str, out num) && num >= 0;
+            double num;
+            return Double.TryParse(str, out num) && num >= 0;
         }
 
-        private void InitializeParam()
+        private void ChangeStrokeThickness(object sender, SelectionChangedEventArgs e)
         {
-            param.Fill = TextBlockFill.Foreground;
-            param.Stroke = TextBlockContour.Foreground;
-            param.StrokeThickness = ((Line) ((ComboBoxItem) ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness;
+            param.StrokeThickness =
+                ((Line) ((ComboBoxItem) ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness;
         }
 
         private void AddShape(object sender, RoutedEventArgs e)
         {
-            var shapeParams = new ShapeParams
-            {
-                Fill = TextBlockFill.Foreground,
-                Stroke = TextBlockContour.Foreground,
-                StrokeThickness = ((Line)((ComboBoxItem) ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness
-            };
-            var shape = StackPanelPoints.Visibility == Visibility.Hidden ? CreateWidthShape(shapeParams) : CreatePointsShape(shapeParams);
+            if (!ButtonAddShape.IsEnabled)
+                return;
+            if (isWidthShape)
+                InitializeWidthShapeParams();
+            else
+                InitializePointsShapeParams();
+            var shape = factory.Create(param);
             painter.AddNewShapeToList(shape);
             ChangeStepButtonEnableds();
+            if (isWidthShape)
+                CleanWidthTextBoxes();
+            else
+                CleanPointsTextBoxes();
         }
 
-        private void CreateWidthShape()
+        private void InitializeWidthShapeParams()
         {
             param.X = Convert.ToDouble(TextBoxX.Text);
             param.Y = Convert.ToDouble(TextBoxY.Text);
-            param.Width = Convert.ToInt32(TextBoxWidth.Text);
-            param.Height = Convert.ToInt32(TextBoxHeight.Text);
-            param.Angle = Convert.ToInt32(TextBoxAngle.Text);
+            param.Width = Convert.ToDouble(TextBoxWidth.Text);
+            param.Height = Convert.ToDouble(TextBoxHeight.Text);
+            param.Angle = Convert.ToDouble(TextBoxAngle.Text);
         }
 
-        private void CreatePointsShape(ShapeParams shapeParams)
+        private void InitializePointsShapeParams()
         {
             var textBoxesX = StackPanelX.Children.OfType<TextBox>().ToList();
             var textBoxesY = StackPanelY.Children.OfType<TextBox>().ToList();
             int count = textBoxesX.Count - 1;
-            shapeParams.PointsX = new int[count];
-            shapeParams.PointsY = new int[count];
+            param.PointsX = new double[count];
+            param.PointsY = new double[count];
 
             for (int i = 0; i < count; i++)
             {
-                shapeParams.PointsX[i] = Convert.ToInt32(textBoxesX[i].Text);
-                shapeParams.PointsY[i] = Convert.ToInt32(textBoxesY[i].Text);
+                param.PointsX[i] = Convert.ToDouble(textBoxesX[i].Text);
+                param.PointsY[i] = Convert.ToDouble(textBoxesY[i].Text);
             }
-            return factory.Create(shapeParams);
         }
 
         private void SelecteComboBoxItemEllips(object sender, RoutedEventArgs e)
@@ -309,38 +336,112 @@ namespace Paint
             }
         }
 
+        //up
         private void BeginPaintNewShape(object sender, MouseButtonEventArgs e)
         {
-            if (!isPaint)
+            var canvas = (Canvas)sender;
+            lastShapeIndex = canvas.Children.Count;
+            lastPoint = e.GetPosition(canvas);  
+            if (!isPaintNow)
             {
-                isPaint = true;
-                var canvas = (Canvas)sender;
-                lastPoint = e.GetPosition(canvas);
-                AddNewShape(canvas, e);
+                isPaintNow = true;
+                if (!isWidthShape)
+                {
+                    pointsCount = 1;
+                    FillPointsTextBoxes(lastPoint);
+                    pointsCount++;
+                }
+            }
+            else
+            {
+                if (!isWidthShape)
+                {
+                    AddNewShape(canvas, e);
+                    pointsCount++;
+                }
             }
         }
 
+        //move
         private void ChangeNewShape(object sender, MouseEventArgs e)
         {
-            if (isPaint)
+            if (isPaintNow)
             {
                 var canvas = (Canvas)sender;
-                canvas.Children.RemoveAt(canvas.Children.Count - 1);
+                if (lastShapeIndex >= 0)
+                    canvas.Children.RemoveRange(lastShapeIndex, canvas.Children.Count - lastShapeIndex);
                 AddNewShape(canvas, e);
             }
         }
 
         private void AddNewShape(Canvas canvas, MouseEventArgs e)
         {
-            paintedShape = factory.C
-                
-                (lastPoint, e.GetPosition(canvas));
-            canvas.Children.Add(paintedShape);
+            var newPoint = e.GetPosition(canvas);
+            if (isWidthShape)
+                FillWidthTextBoxes(newPoint);
+            else
+                FillPointsTextBoxes(newPoint);
         }
 
+        private void FillWidthTextBoxes(Point newPoint)
+        { 
+            double minX, maxX, minY, maxY;
+            FindMinAndMax(lastPoint.X, newPoint.X, out minX, out maxX);
+            FindMinAndMax(lastPoint.Y, newPoint.Y, out minY, out maxY);
+            TextBoxWidth.Text = (maxX - minX).ToString();
+            TextBoxHeight.Text = (maxY - minY).ToString();
+            TextBoxX.Text = minX.ToString();
+            TextBoxY.Text = minY.ToString();
+            TextBoxAngle.Text = 0.ToString();
+        }
+
+        private void FindMinAndMax(double val1, double val2, out double min, out double max)
+        {
+            if (val1 > val2)
+            {
+                min = val2;
+                max = val1;
+            }
+            else
+            {
+                max = val2;
+                min = val1;
+            }
+        }
+
+        private void FillPointsTextBoxes(Point newPoint)
+        {
+            if (StackPanelX.Children.Count >= pointsCount)
+            {
+                ((TextBox) (StackPanelX.Children[pointsCount - 1])).Text = newPoint.X.ToString();
+                ((TextBox) (StackPanelY.Children[pointsCount - 1])).Text = newPoint.Y.ToString();
+            }
+        }
+
+        //down
         private void EndPaintNewShape(object sender, MouseButtonEventArgs e)
         {
-            isPaint = false;
+            if (isPaintNow && isWidthShape)
+            {
+                EndPaint();
+            }
+        }
+
+        //right down
+        private void EndPaintPointsShape(object sender, MouseButtonEventArgs e)
+        {
+            if (isPaintNow && !isWidthShape)
+            {
+                EndPaint();
+            }
+        }
+
+        private void EndPaint()
+        {
+            if (lastShapeIndex >= 0)
+                CanvasPaint.Children.RemoveRange(lastShapeIndex, CanvasPaint.Children.Count - lastShapeIndex);
+            isPaintNow = false;
+            AddShape(ButtonAddShape, new RoutedEventArgs());
         }
     }
 }

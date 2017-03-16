@@ -98,14 +98,14 @@
                         <Button Grid.Row="1" Grid.Column="29" Background="#FFFF6777" Style="{StaticResource ResourceKey=ColorButton}" Click="ClickColorButton"></Button>
                         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Name="TextBlockContour" Style="{StaticResource ResourceKey=PointerTextBlock}" MouseDown="ClickPointerTextBlock">▲ Contour</TextBlock>
                     </Grid>
-                    <ComboBox Name="ComboBoxStrokeThickness" Grid.Column="1" Margin="5" VerticalAlignment="Center" Padding="10">
+                    <ComboBox Name="ComboBoxStrokeThickness" Grid.Column="1" Margin="5" VerticalAlignment="Center" Padding="10" SelectionChanged="ChangeStrokeThickness">
                         <ComboBoxItem>
                             <Line Style="{StaticResource ResourceKey=BorderLine}" StrokeThickness="1"></Line>
                         </ComboBoxItem>
                         <ComboBoxItem>
                             <Line Style="{StaticResource ResourceKey=BorderLine}" StrokeThickness="2.5"></Line>
                         </ComboBoxItem>
-                        <ComboBoxItem IsSelected="True">
+                        <ComboBoxItem Name="ComboBoxItemDefault">
                             <Line Style="{StaticResource ResourceKey=BorderLine}" StrokeThickness="4"></Line>
                         </ComboBoxItem>
                         <ComboBoxItem>
@@ -117,7 +117,7 @@
                     </ComboBox>
                 </Grid>
             </GroupBox>
-            <Canvas Name="CanvasPaint" Grid.Row="1" Background="White" MouseLeftButtonUp="EndPaintNewShape" MouseLeftButtonDown="BeginPaintNewShape" MouseMove="ChangeNewShape"></Canvas>
+            <Canvas Name="CanvasPaint" Grid.Row="1" Background="White" MouseLeftButtonUp="EndPaintNewShape" MouseLeftButtonDown="BeginPaintNewShape" MouseMove="ChangeNewShape" MouseRightButtonDown="EndPaintPointsShape"></Canvas>
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -127,9 +127,9 @@
             <GroupBox Grid.Row="1" Style="{StaticResource ResourceKey=HeadTextBlock}" Header="Shapes list">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10*"/>
                         <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>

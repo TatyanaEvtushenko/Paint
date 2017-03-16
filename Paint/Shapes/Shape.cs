@@ -6,24 +6,31 @@ using Paint.Factory;
 
 namespace Paint.Shapes
 {
+    [DataContract]
     abstract class Shape : IShape
     {
         public string Description => this.GetType().ToString();
-        public Brush Fill => ShapeForDrawing.Fill;
-        public Brush Stroke => ShapeForDrawing.Stroke;
-        public double StrokeThickness => ShapeForDrawing.StrokeThickness;
+        [DataMember]
+        public Brush Fill { get; set; }
+        [DataMember]
+        public Brush Stroke { get; set; }
+        [DataMember]
+        public double StrokeThickness { get; set; }
 
-        public Shape(ShapeParams param)
+        protected Shape(Brush fill, Brush stroke, double strokeThickness)
         {
-            Fill = param.Fill
+            Fill = fill;
+            Stroke = stroke;
+            StrokeThickness = strokeThickness;
         }
+
+        protected abstract System.Windows.Shapes.Shape CreateShapeForDrawing(); 
 
         public void Draw(Canvas canvas)
         {
             var shape = CreateShapeForDrawing();
             canvas.Children.Add(shape);
         }
-
-        public abstract System.Windows.Shapes.Shape CreateShapeForDrawing();
     }
 }
+
