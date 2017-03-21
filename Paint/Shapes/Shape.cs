@@ -1,4 +1,6 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,7 +10,7 @@ using Paint.Factory;
 namespace Paint.Shapes
 {
     [DataContract]
-    abstract class Shape : IShape, ISelectable
+    abstract class Shape : IShape, ISelectable, IEditable
     {
         public string Description => this.GetType().Name;
         [DataMember]
@@ -25,42 +27,47 @@ namespace Paint.Shapes
             StrokeThickness = strokeThickness;
         }
 
-        protected abstract System.Windows.Shapes.Shape CreateShapeForDrawing(); 
+        public abstract System.Windows.Shapes.Shape CreateShapeForDrawing(); 
 
         public void Draw(Canvas canvas)
         {
             var shape = CreateShapeForDrawing();
-            shape.Focusable = true;
-            shape.MouseRightButtonDown += (sender, args) => ChangeSelecting((System.Windows.Shapes.Shape) sender);
-            shape.LostKeyboardFocus += (sender, args) => UnselecteShape((System.Windows.Shapes.Shape) sender);
             canvas.Children.Add(shape);
         }
 
-        public void ChangeSelecting(System.Windows.Shapes.Shape shape)
+        protected abstract System.Windows.Shapes.Shape GetShapeOnCanvas(Canvas canvas);
+
+        public void Selecte(Canvas canvas)
         {
-            if (!(this is ISelectable))
-                return;
-            if (IsSelected(shape))
-                UnselecteShape(shape);
-            else
-                SelecteShape(shape);
-        }
-        
-        private bool IsSelected(System.Windows.Shapes.Shape shape)
-        {
-            return shape.StrokeDashArray.Count != 0;
+            var shapeOnCanvas = GetShapeOnCanvas(canvas);
+            shapeOnCanvas.StrokeDashArray = DoubleCollection.Parse("2");
         }
 
-        private void SelecteShape(System.Windows.Shapes.Shape shape)
+        public void Unselecte(Canvas canvas)
         {
-            shape.StrokeDashArray = DoubleCollection.Parse("2");
-            Keyboard.Focus(shape);
+            var shapeOnCanvas = GetShapeOnCanvas(canvas);
+            shapeOnCanvas.StrokeDashArray = null;
         }
 
-        private void UnselecteShape(System.Windows.Shapes.Shape shape)
+        protected virtual void EditParams(ShapeParams param)
         {
-            if (this is ISelectable)
-                shape.StrokeDashArray.Clear();
+            Fill = param.Fill;
+            Stroke = param.Stroke;
+            StrokeThickness = param.StrokeThickness;
+        }
+
+        protected virtual void EditShapeOnCanvas(System.Windows.Shapes.Shape shape)
+        {
+            shape.Fill = Fill;
+            shape.Stroke = Stroke;
+            shape.StrokeThickness = StrokeThickness;
+        }
+
+        public void Edit(Canvas canvas, ShapeParams param)
+        {
+            var shapeOnCanvas = GetShapeOnCanvas(canvas);
+            EditParams(param);
+            EditShapeOnCanvas(shapeOnCanvas);
         }
     }
 }

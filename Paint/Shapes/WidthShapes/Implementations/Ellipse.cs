@@ -13,7 +13,7 @@ namespace Paint.Shapes.WidthShapes.Implementations
             : base(x, y, width, height, angle, fill, stroke, strokeThickness)
         { }
 
-        protected override System.Windows.Shapes.Shape CreateShapeForDrawing()
+        public override System.Windows.Shapes.Shape CreateShapeForDrawing()
         {
             var ellipse = new System.Windows.Shapes.Ellipse
             {

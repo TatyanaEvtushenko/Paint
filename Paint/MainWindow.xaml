@@ -136,7 +136,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <ListBox Name="ListBoxShapes" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" FontSize="12">
+                    <ListBox Name="ListBoxShapes" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" FontSize="12" SelectionChanged="ChangeShapeSelecting">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Background="{StaticResource ResourceKey=ToolBrush}" HorizontalAlignment="Stretch" Margin="2">

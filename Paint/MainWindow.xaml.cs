@@ -11,6 +11,9 @@ using Paint.Factory.Implementations;
 using Paint.Serializer;
 using Paint.Serializer.Implementations;
 using Paint.ShapeList.Implementations;
+using Paint.Shapes;
+using Paint.Shapes.PointShapes;
+using Paint.Shapes.WidthShapes;
 using Shape = Paint.Shapes.Shape;
 
 namespace Paint
@@ -30,7 +33,9 @@ namespace Paint
         private bool isWidthShape;
         private int lastShapeIndex;
         private int pointsCount;
-       
+
+        private Shape editedShape;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -209,13 +214,21 @@ namespace Paint
                 InitializeWidthShapeParams();
             else
                 InitializePointsShapeParams();
-            var shape = factory.Create(param);
-            painter.AddNewShapeToList(shape);
-            ChangeStepButtonEnableds();
-            if (isWidthShape)
-                CleanWidthTextBoxes();
+            if (editedShape == null)
+            {
+                var shape = factory.Create(param);
+                painter.AddNewShapeToList(shape);
+                if (isWidthShape)
+                    CleanWidthTextBoxes();
+                else
+                    CleanPointsTextBoxes();
+            }
             else
-                CleanPointsTextBoxes();
+            {
+                editedShape.Edit(CanvasPaint, param);
+               // ListBoxShapes.SelectedIndex = -1;
+            }
+            ChangeStepButtonEnableds();
         }
 
         private void InitializeWidthShapeParams()
@@ -339,6 +352,7 @@ namespace Paint
         //up
         private void BeginPaintNewShape(object sender, MouseButtonEventArgs e)
         {
+            ListBoxShapes.SelectedIndex = -1;
             var canvas = (Canvas)sender;
             lastShapeIndex = canvas.Children.Count;
             lastPoint = e.GetPosition(canvas);  
@@ -442,6 +456,62 @@ namespace Paint
                 CanvasPaint.Children.RemoveRange(lastShapeIndex, CanvasPaint.Children.Count - lastShapeIndex);
             isPaintNow = false;
             AddShape(ButtonAddShape, new RoutedEventArgs());
+        }
+
+        private void ChangeShapeSelecting(object sender, RoutedEventArgs e)
+        {
+            UnselecteShape();
+            if (ListBoxShapes.SelectedIndex >= 0)
+                SelecteShape();
+        }
+
+        private void UnselecteShape()
+        {
+            if (editedShape is ISelectable)
+                editedShape.Unselecte(CanvasPaint);
+            editedShape = null;
+            ButtonAddShape.Content = "Add shape";
+        }
+
+        private void SelecteShape()
+        {
+            var index = ListBoxShapes.SelectedIndex;
+            editedShape = painter.ShapesList[index];
+            if (!(editedShape is ISelectable))
+                return;
+            editedShape.Selecte(CanvasPaint);
+            param.Fill = editedShape.Fill;
+            param.StrokeThickness = editedShape.StrokeThickness;
+            param.Stroke = editedShape.Stroke;
+            if (editedShape is WidthShape)
+                SelecteWidthShape((WidthShape)editedShape);
+            else
+                SelectePointsShape((PointsShape)editedShape);
+            ButtonAddShape.Content = "Change shape";
+        }
+
+        private void SelecteWidthShape(WidthShape widthShape)
+        {
+            ComboBoxItemEllipse.IsSelected = widthShape is Shapes.WidthShapes.Implementations.Ellipse;
+            ComboBoxItemRectangle.IsSelected = widthShape is Shapes.WidthShapes.Implementations.Rectangle;
+            ComboBoxItemRoundRectangle.IsSelected = widthShape is Shapes.WidthShapes.Implementations.RoundRectangle;
+            TextBoxHeight.Text = widthShape.Height.ToString();
+            TextBoxWidth.Text = widthShape.Width.ToString();
+            TextBoxX.Text = widthShape.X.ToString();
+            TextBoxY.Text = widthShape.Y.ToString();
+            TextBoxAngle.Text = widthShape.Angle.ToString();
+        }
+
+        private void SelectePointsShape(PointsShape pointsShape)
+        {
+            ComboBoxItemPolygon.IsSelected = pointsShape is Shapes.PointShapes.Implementations.Polygon;
+            ComboBoxItemPolyline.IsSelected = pointsShape is Shapes.PointShapes.Implementations.Polyline;
+            CleanPointsTextBoxes();
+            for (int i = 0; i < pointsShape.Points.Count; i++)
+            {
+                ((TextBox)StackPanelX.Children[i]).Text = pointsShape.Points[i].X.ToString();
+                ((TextBox)StackPanelY.Children[i]).Text = pointsShape.Points[i].Y.ToString();
+            }
         }
     }
 }

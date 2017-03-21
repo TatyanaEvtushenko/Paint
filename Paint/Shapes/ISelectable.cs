@@ -10,6 +10,7 @@ namespace Paint.Shapes
 {
     interface ISelectable
     {
-        void ChangeSelecting(System.Windows.Shapes.Shape shape);
+        void Selecte(Canvas canvas);
+        void Unselecte(Canvas canvas);
     }
 }

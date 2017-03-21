@@ -11,7 +11,7 @@ namespace Paint.Shapes.PointShapes.Implementations
             : base(pointsX, pointsY, fill, stroke, strokeThickness)
         { }
 
-        protected override System.Windows.Shapes.Shape CreateShapeForDrawing()
+        public override System.Windows.Shapes.Shape CreateShapeForDrawing()
         {
             return new System.Windows.Shapes.Polygon
             {
