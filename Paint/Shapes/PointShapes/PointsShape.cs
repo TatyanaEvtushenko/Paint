@@ -44,7 +44,6 @@ namespace Paint.Shapes.PointShapes
         protected override void EditShapeOnCanvas(System.Windows.Shapes.Shape shape)
         {
             base.EditShapeOnCanvas(shape);
-            //
         }
     }
 }

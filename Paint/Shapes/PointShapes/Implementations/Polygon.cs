@@ -5,7 +5,7 @@ using System.Windows.Media;
 namespace Paint.Shapes.PointShapes.Implementations
 {
     [DataContract]
-    class Polygon : PointsShape
+    class Polygon : PointsShape, ISelectable, IEditable
     {
         public Polygon(double[] pointsX, double[] pointsY, Brush fill, Brush stroke, double strokeThickness)
             : base(pointsX, pointsY, fill, stroke, strokeThickness)

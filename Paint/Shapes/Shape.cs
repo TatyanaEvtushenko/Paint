@@ -10,7 +10,7 @@ using Paint.Factory;
 namespace Paint.Shapes
 {
     [DataContract]
-    abstract class Shape : IShape, ISelectable, IEditable
+    abstract class Shape : IShape
     {
         public string Description => this.GetType().Name;
         [DataMember]

@@ -37,9 +37,7 @@ namespace Paint.Shapes.WidthShapes
                                          Equals(x.Fill, shape.Fill) && Equals(x.Stroke, shape.Stroke) &&
                                          Equals(x.StrokeThickness, shape.StrokeThickness) &&
                                          x.GetType() == shape.GetType() && Equals(x.Width, shape.Width) &&
-                                         Equals(x.Height, shape.Height) /*&&
-                                         x.GetValue(Canvas.LeftProperty) == shape.GetValue(Canvas.LeftProperty) &&
-                                         x.GetValue(Canvas.TopProperty) == shape.GetValue(Canvas.TopProperty)*/);
+                                         Equals(x.Height, shape.Height));
         }
 
         protected override void EditParams(ShapeParams param)

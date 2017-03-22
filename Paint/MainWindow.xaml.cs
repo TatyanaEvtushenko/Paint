@@ -225,7 +225,8 @@ namespace Paint
             }
             else
             {
-                editedShape.Edit(CanvasPaint, param);
+                if (editedShape is IEditable)
+                    editedShape.Edit(CanvasPaint, param);
                // ListBoxShapes.SelectedIndex = -1;
             }
             ChangeStepButtonEnableds();
@@ -282,18 +283,21 @@ namespace Paint
 
         private void GoToForwardStep(object sender, RoutedEventArgs e)
         {
+            editedShape = null;
             painter.GoToForwardStep();
             ChangeStepButtonEnableds();
         }
 
         private void GoToBackStep(object sender, RoutedEventArgs e)
         {
+            editedShape = null;
             painter.GoToBackStep();
             ChangeStepButtonEnableds();
         }
 
         private void CleanAll(object sender, RoutedEventArgs e)
         {
+            editedShape = null;
             painter.CleanAll();
             ChangeStepButtonEnableds();
         }
@@ -308,6 +312,7 @@ namespace Paint
 
         private void OpenShapeList(object sender, RoutedEventArgs e)
         {
+            editedShape = null;
             try
             {
                 if (openFileDialog.ShowDialog() == true)
@@ -318,6 +323,10 @@ namespace Paint
                         MessageBox.Show("The current shape list will be deleted. Do you want to continue?") ==
                         MessageBoxResult.OK)
                     ChangeShapeList(newShapeList);
+                    if (isWidthShape)
+                        CleanWidthTextBoxes();
+                    else
+                        CleanPointsTextBoxes();
                 }
             }
             catch
@@ -336,6 +345,7 @@ namespace Paint
 
         private void SaveShapeList(object sender, RoutedEventArgs e)
         {
+            editedShape = null;
             try
             {
                 if (saveFileDialog.ShowDialog() == true)
@@ -470,31 +480,38 @@ namespace Paint
             if (editedShape is ISelectable)
                 editedShape.Unselecte(CanvasPaint);
             editedShape = null;
-            ButtonAddShape.Content = "Add shape";
+            if (editedShape is IEditable)
+                ButtonAddShape.Content = "Add shape";
         }
 
         private void SelecteShape()
         {
             var index = ListBoxShapes.SelectedIndex;
             editedShape = painter.ShapesList[index];
-            if (!(editedShape is ISelectable))
-                return;
-            editedShape.Selecte(CanvasPaint);
-            param.Fill = editedShape.Fill;
-            param.StrokeThickness = editedShape.StrokeThickness;
-            param.Stroke = editedShape.Stroke;
-            if (editedShape is WidthShape)
-                SelecteWidthShape((WidthShape)editedShape);
-            else
-                SelectePointsShape((PointsShape)editedShape);
-            ButtonAddShape.Content = "Change shape";
+            if (editedShape is ISelectable)
+                editedShape.Selecte(CanvasPaint);
+            if (editedShape is IEditable)
+            {
+                param.Fill = editedShape.Fill;
+                param.StrokeThickness = editedShape.StrokeThickness;
+                param.Stroke = editedShape.Stroke;
+                if (editedShape is WidthShape)
+                    SelecteWidthShape((WidthShape)editedShape);
+                else
+                    SelectePointsShape((PointsShape)editedShape);
+                ButtonAddShape.Content = "Change shape";
+            }
         }
 
         private void SelecteWidthShape(WidthShape widthShape)
         {
-            ComboBoxItemEllipse.IsSelected = widthShape is Shapes.WidthShapes.Implementations.Ellipse;
-            ComboBoxItemRectangle.IsSelected = widthShape is Shapes.WidthShapes.Implementations.Rectangle;
-            ComboBoxItemRoundRectangle.IsSelected = widthShape is Shapes.WidthShapes.Implementations.RoundRectangle;
+            if (widthShape is Shapes.WidthShapes.Implementations.Ellipse)
+                ComboBoxItemEllipse.IsSelected = true;
+            else
+                if (widthShape is Shapes.WidthShapes.Implementations.Rectangle)
+                    ComboBoxItemRectangle.IsSelected = true;
+                else
+                    ComboBoxItemRoundRectangle.IsSelected = true ;
             TextBoxHeight.Text = widthShape.Height.ToString();
             TextBoxWidth.Text = widthShape.Width.ToString();
             TextBoxX.Text = widthShape.X.ToString();
@@ -504,8 +521,10 @@ namespace Paint
 
         private void SelectePointsShape(PointsShape pointsShape)
         {
-            ComboBoxItemPolygon.IsSelected = pointsShape is Shapes.PointShapes.Implementations.Polygon;
-            ComboBoxItemPolyline.IsSelected = pointsShape is Shapes.PointShapes.Implementations.Polyline;
+            if (pointsShape is Shapes.PointShapes.Implementations.Polygon)
+                ComboBoxItemPolygon.IsSelected = true;
+            else
+                ComboBoxItemPolyline.IsSelected = true;
             CleanPointsTextBoxes();
             for (int i = 0; i < pointsShape.Points.Count; i++)
             {

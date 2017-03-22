@@ -7,7 +7,7 @@ using System.Windows.Media;
 namespace Paint.Shapes.WidthShapes.Implementations
 {
     [DataContract]
-    class Ellipse : WidthShape
+    class Ellipse : WidthShape, ISelectable, IEditable
     {
         public Ellipse(double x, double y, double width, double height, double angle, Brush fill, Brush stroke, double strokeThickness)
             : base(x, y, width, height, angle, fill, stroke, strokeThickness)

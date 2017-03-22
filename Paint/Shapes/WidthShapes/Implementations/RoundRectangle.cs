@@ -6,7 +6,7 @@ using System.Windows.Media;
 namespace Paint.Shapes.WidthShapes.Implementations
 {
     [DataContract]
-    class RoundRectangle : WidthShape
+    class RoundRectangle : WidthShape, ISelectable, IEditable
     {
         public RoundRectangle(double x, double y, double width, double height, double angle, Brush fill, Brush stroke, double strokeThickness)
             : base(x, y, width, height, angle, fill, stroke, strokeThickness)
