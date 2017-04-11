@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Paint"
         mc:Ignorable="d"
-        Title="New paint" Height="750" Width="1020">
+        Title="New paint" Height="750" Width="1150">
     
     <Window.Resources>
         <ResourceDictionary Source="Dictionary.xaml"/>
@@ -117,7 +117,7 @@
                     </ComboBox>
                 </Grid>
             </GroupBox>
-            <Canvas Name="CanvasPaint" Grid.Row="1" Background="White" MouseLeftButtonUp="EndPaintNewShape" MouseLeftButtonDown="BeginPaintNewShape" MouseMove="ChangeNewShape" MouseRightButtonDown="EndPaintPointsShape"></Canvas>
+            <Canvas Name="CanvasPaint" Grid.Row="1" Background="{StaticResource KOTIKI}" MouseLeftButtonUp="EndPaintNewShape" MouseLeftButtonDown="BeginPaintNewShape" MouseMove="ChangeNewShape" MouseRightButtonDown="EndPaintPointsShape"></Canvas>
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -164,7 +164,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Style="{StaticResource ResourceKey=HeadTextBlock}">Shape</TextBlock>
                     <ComboBox Grid.Row="1" Name="ComboBoxShape" SelectionChanged="ChangeShape" Margin="3 0 3 3">
-                        <ComboBoxItem Name="ComboBoxItemEllipse" Selected="SelecteComboBoxItemEllips">
+                        <!--<ComboBoxItem Name="ComboBoxItemEllipse" Selected="SelecteComboBoxItemEllips">
                             <StackPanel>
                                 <TextBlock HorizontalAlignment="Left">Ellipse</TextBlock>
                                 <Ellipse Margin="5 0" HorizontalAlignment="Left" Fill="{StaticResource ResourceKey=IconBrush}" Height="15" Width="40"></Ellipse>
@@ -193,7 +193,7 @@
                                 <TextBlock HorizontalAlignment="Left">Polyline</TextBlock>
                                 <Polyline Margin="5 0" HorizontalAlignment="Left" Stroke="{StaticResource ResourceKey=IconBrush}" Points="0 15 20 0 40 15"></Polyline>
                             </StackPanel>
-                        </ComboBoxItem>
+                        </ComboBoxItem>-->
                     </ComboBox>
                     <StackPanel Grid.Row="2" Visibility="Hidden" Name="StackPanelPosition">
                         <TextBlock Margin="3 3 3 0" Style="{StaticResource ResourceKey=HeadTextBlock}">Shape position</TextBlock>

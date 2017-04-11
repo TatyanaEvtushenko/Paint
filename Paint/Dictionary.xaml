@@ -5,6 +5,7 @@
     <SolidColorBrush x:Key="ToolBrush" Color="#FFDFFCF5"></SolidColorBrush>
     <SolidColorBrush x:Key="IconBrush" Color="Black"></SolidColorBrush>
     <SolidColorBrush x:Key="ButtonBrush" Color="Azure"></SolidColorBrush>
+    <ImageBrush x:Key="KOTIKI" ImageSource="kotiki.jpg"></ImageBrush>
 
     <Style TargetType="TextBlock">
         <Setter Property="FontSize" Value="12"/>

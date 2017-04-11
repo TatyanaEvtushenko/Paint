@@ -1,0 +1,71 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Windows.Controls;
+using System.Windows.Threading;
+using Shape;
+using Shape.Interfaces;
+using MyShape = Shape.Shape;
+
+namespace Paint
+{
+    class ShapeDownloader
+    {
+        private const string FOLDER_NAME = "ShapeDLL";
+        private List<string> dllFiles = new List<string>();
+        private FileSystemWatcher watcher = new FileSystemWatcher(FOLDER_NAME);
+
+        private ComboBox comboBox;
+
+        public List<IShapeFactory> Factories { get; set; } = new List<IShapeFactory>();
+        public List<MyShape> Shapes { get; set; } = new List<MyShape>();
+
+        public ShapeDownloader(ComboBox comboBox)
+        {
+            this.comboBox = comboBox;
+            
+            watcher.Created += (sender, args) => Download();
+            watcher.EnableRaisingEvents = true;
+        }
+
+        public void Download()
+        {
+            var files = Directory.GetFiles(FOLDER_NAME);
+            foreach (var file in files)
+            {
+                if (new FileInfo(file).Extension == ".dll" && !dllFiles.Contains(file))
+                {
+                    dllFiles.Add(file);
+                    var assembly = Assembly.LoadFrom(file);
+                    var type = assembly.GetExportedTypes()[0];
+                    var typeName = type.FullName;
+                    var factory = (IShapeFactory)assembly.CreateInstance(typeName);
+                    Factories.Add(factory);
+
+                    var objects = new object[] {new ShapeParams {PointsX = new double[0], PointsY = new double[0]}};
+                    var shape = (MyShape)type.GetMethod("Create").Invoke(factory, objects);
+                    Shapes.Add(shape);
+
+                  //  var shapeIcon = (System.Windows.Shapes.Shape)type.GetMethod("GetShapeIcon").Invoke(factory, null);
+                  //  var item = new ComboBoxItem().DataContext = shapeIcon;
+                    //comboBox.Items = new ItemCollection(item);
+                    comboBox.Dispatcher.Invoke(() => { 
+                        comboBox.Items.Add(shape.Description);
+                        comboBox.SelectedIndex = comboBox.Items.Count - 1;
+                    });
+                }
+            }
+        }
+
+        public object InvokeMethod(int index, string methodName, object[] param)
+        {
+            if (index < 0)
+                return null;
+            var factory = Factories[index];
+            var method = factory.GetType().GetMethod(methodName);
+            return method.Invoke(factory, param);
+        }
+    }
+}

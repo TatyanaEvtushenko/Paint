@@ -6,21 +6,20 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Microsoft.Win32;
-using Paint.Factory;
-using Paint.Factory.Implementations;
 using Paint.Serializer;
 using Paint.Serializer.Implementations;
 using Paint.ShapeList.Implementations;
-using Paint.Shapes;
-using Paint.Shapes.PointShapes;
-using Paint.Shapes.WidthShapes;
-using Shape = Paint.Shapes.Shape;
+using Shape;
+using Shape.Heirs;
+using Shape.Interfaces;
+using Shape = System.Windows.Shapes.Shape;
+using MyShape = Shape.Shape;
 
 namespace Paint
 {
     public partial class MainWindow : Window
     {
-        private IShapeFactory factory;
+        private ShapeDownloader shapeDownloader;
         private Painter painter;
         private ISerializer<Painter> serializer;
         private OpenFileDialog openFileDialog;
@@ -34,29 +33,28 @@ namespace Paint
         private int lastShapeIndex;
         private int pointsCount;
 
-        private Shape editedShape;
+        private MyShape editedShape;
 
         public MainWindow()
         {
             InitializeComponent();
             InitializeParams();
+            shapeDownloader.Download();
         }
 
-        private void InitializeParams() 
+        private void InitializeParams()
         {
-            isFillPointer = true;
-            ComboBoxItemEllipse.IsSelected = true;
+            shapeDownloader = new ShapeDownloader(ComboBoxShape);
             ComboBoxItemDefault.IsSelected = true;
-            factory = new EllipseFactory();
             painter = Painter.GetPainter(CanvasPaint);
-            serializer = new JsonSerializer<Painter>();
+            serializer = new BinarySerializer<Painter>();
             openFileDialog = new OpenFileDialog();
             saveFileDialog = new SaveFileDialog();
             param = new ShapeParams
             {
                 Fill = TextBlockFill.Foreground,
                 Stroke = TextBlockContour.Foreground,
-                StrokeThickness = ((Line)((ComboBoxItem)ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness
+                StrokeThickness = ((Line) ((ComboBoxItem) ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness
             };
         }
 
@@ -101,20 +99,16 @@ namespace Paint
         private void ChangeShape(object sender, SelectionChangedEventArgs e)
         {
             var comboBox = (ComboBox)sender;
-            var item = (ComboBoxItem)comboBox.SelectedItem;
-            switch (item.Name)
+            var index = comboBox.SelectedIndex;
+            if (shapeDownloader.Shapes[index] is WidthShape)
             {
-                case "ComboBoxItemRectangle":
-                case "ComboBoxItemRoundRectangle":
-                case "ComboBoxItemEllipse":
-                    ChangeStackPanelVisibility(StackPanelPosition, StackPanelPoints);
-                    CleanWidthTextBoxes();
-                    break;
-                case "ComboBoxItemPolyline":
-                case "ComboBoxItemPolygon":
-                    ChangeStackPanelVisibility(StackPanelPoints, StackPanelPosition);
-                    CleanPointsTextBoxes();
-                    break;
+                ChangeStackPanelVisibility(StackPanelPosition, StackPanelPoints);
+                CleanWidthTextBoxes();
+            }
+            else
+            {
+                ChangeStackPanelVisibility(StackPanelPoints, StackPanelPosition);
+                CleanPointsTextBoxes();
             }
             isPaintNow = false;
             isWidthShape = StackPanelPoints.Visibility == Visibility.Hidden;
@@ -146,13 +140,15 @@ namespace Paint
 
             ButtonAddShape.IsEnabled = CheckIsStrPositiveNumber(TextBoxAngle.Text) && CheckIsStrPositiveNumber(TextBoxHeight.Text)
             && CheckIsStrPositiveNumber(TextBoxWidth.Text) && CheckIsStrPositiveNumber(TextBoxX.Text) && CheckIsStrPositiveNumber(TextBoxY.Text)
-            && Convert.ToDouble(TextBoxX.Text) < maxWidth && Convert.ToDouble(TextBoxY.Text) < maxHeight;
+            && Convert.ToDouble(TextBoxX.Text) < maxWidth && Convert.ToDouble(TextBoxY.Text) < maxHeight && shapeDownloader.Factories.Count > 0;
 
             ShowTempShape();
         }
 
         private void ChangePointsTextBoxes(object sender, TextChangedEventArgs e)
         {
+            if (shapeDownloader.Factories.Count <= 0)
+                return;
             var textBoxesX = StackPanelX.Children.OfType<TextBox>().ToList();
             var textBoxesY = StackPanelY.Children.OfType<TextBox>().ToList();
             bool isCorrect = true;
@@ -183,8 +179,9 @@ namespace Paint
                 InitializeWidthShapeParams();
             else
                 InitializePointsShapeParams();
-            var shape = factory.CreateShapeForDrawing(param);
-            CanvasPaint.Children.Add(shape);
+            var shape = (System.Windows.Shapes.Shape) shapeDownloader.InvokeMethod(ComboBoxShape.SelectedIndex, "CreateShapeForDrawing", new object[] { param });
+            if (shape != null)
+                CanvasPaint.Children.Add(shape);
         }
 
         private TextBox CreatePointTextBox()
@@ -216,7 +213,7 @@ namespace Paint
                 InitializePointsShapeParams();
             if (editedShape == null)
             {
-                var shape = factory.Create(param);
+                var shape = (MyShape) shapeDownloader.InvokeMethod(ComboBoxShape.SelectedIndex, "Create", new object[] {param});
                 painter.AddNewShapeToList(shape);
                 if (isWidthShape)
                     CleanWidthTextBoxes();
@@ -227,7 +224,6 @@ namespace Paint
             {
                 if (editedShape is IEditable)
                     editedShape.Edit(CanvasPaint, param);
-               // ListBoxShapes.SelectedIndex = -1;
             }
             ChangeStepButtonEnableds();
         }
@@ -254,31 +250,6 @@ namespace Paint
                 param.PointsX[i] = Convert.ToDouble(textBoxesX[i].Text);
                 param.PointsY[i] = Convert.ToDouble(textBoxesY[i].Text);
             }
-        }
-
-        private void SelecteComboBoxItemEllips(object sender, RoutedEventArgs e)
-        {
-            factory = new EllipseFactory(); 
-        }
-
-        private void SelecteComboBoxItemRectangle(object sender, RoutedEventArgs e)
-        {
-            factory = new RectangleFactory();
-        }
-
-        private void SelecteComboBoxItemRoundRectangle(object sender, RoutedEventArgs e)
-        {
-            factory = new RoundRectangleFactory();
-        }
-
-        private void SelecteComboBoxItemPolyline(object sender, RoutedEventArgs e)
-        {
-            factory = new PolylineFactory();
-        }
-
-        private void SelecteComboBoxItemPolygon(object sender, RoutedEventArgs e)
-        {
-            factory = new PolygonFactory();
         }
 
         private void GoToForwardStep(object sender, RoutedEventArgs e)
@@ -408,7 +379,8 @@ namespace Paint
         }
 
         private void FillWidthTextBoxes(Point newPoint)
-        { 
+        {   if (shapeDownloader.Factories.Count <= 0)
+                return;
             double minX, maxX, minY, maxY;
             FindMinAndMax(lastPoint.X, newPoint.X, out minX, out maxX);
             FindMinAndMax(lastPoint.Y, newPoint.Y, out minY, out maxY);
@@ -435,7 +407,7 @@ namespace Paint
 
         private void FillPointsTextBoxes(Point newPoint)
         {
-            if (StackPanelX.Children.Count >= pointsCount)
+            if (StackPanelX.Children.Count >= pointsCount && shapeDownloader.Factories.Count > 0)
             {
                 ((TextBox) (StackPanelX.Children[pointsCount - 1])).Text = newPoint.X.ToString();
                 ((TextBox) (StackPanelY.Children[pointsCount - 1])).Text = newPoint.Y.ToString();
@@ -505,13 +477,12 @@ namespace Paint
 
         private void SelecteWidthShape(WidthShape widthShape)
         {
-            if (widthShape is Shapes.WidthShapes.Implementations.Ellipse)
-                ComboBoxItemEllipse.IsSelected = true;
-            else
-                if (widthShape is Shapes.WidthShapes.Implementations.Rectangle)
-                    ComboBoxItemRectangle.IsSelected = true;
-                else
-                    ComboBoxItemRoundRectangle.IsSelected = true ;
+            for (int i = 0; i < shapeDownloader.Shapes.Count; i++)
+                if (shapeDownloader.Shapes[i].GetType() == widthShape.GetType())
+                {
+                    ComboBoxShape.SelectedIndex = i;
+                    break;
+                }
             TextBoxHeight.Text = widthShape.Height.ToString();
             TextBoxWidth.Text = widthShape.Width.ToString();
             TextBoxX.Text = widthShape.X.ToString();
@@ -521,10 +492,12 @@ namespace Paint
 
         private void SelectePointsShape(PointsShape pointsShape)
         {
-            if (pointsShape is Shapes.PointShapes.Implementations.Polygon)
-                ComboBoxItemPolygon.IsSelected = true;
-            else
-                ComboBoxItemPolyline.IsSelected = true;
+            for (int i = 0; i < shapeDownloader.Shapes.Count; i++)
+                if (shapeDownloader.Shapes[i].GetType() == pointsShape.GetType())
+                {
+                    ComboBoxShape.SelectedIndex = i;
+                    break;
+                }
             CleanPointsTextBoxes();
             for (int i = 0; i < pointsShape.Points.Count; i++)
             {

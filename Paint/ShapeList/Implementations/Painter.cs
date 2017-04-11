@@ -1,19 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Windows.Controls;
-using Paint.Shapes;
+using MyShape = Shape.Shape;
 
 namespace Paint.ShapeList.Implementations
 {
+    [Serializable]
     [DataContract]
     class Painter : IShapeList
     {
         private static Painter painter;
-        private Stack<Shape> buffer;
+        private Stack<MyShape> buffer;
         public Canvas Canvas { get; set; }
         [DataMember]
-        public List<Shape> ShapesList { get; set; }
+        public List<MyShape> ShapesList { get; set; }
 
         public bool CanGoToForwardStep => buffer.Count > 0;
         public bool CanGoToBackStep => ShapesList.Count > 0;
@@ -22,8 +24,8 @@ namespace Paint.ShapeList.Implementations
         private Painter(Canvas canvasPainter)
         {
             Canvas = canvasPainter;
-            ShapesList = new List<Shape>();
-            buffer = new Stack<Shape>();
+            ShapesList = new List<MyShape>();
+            buffer = new Stack<MyShape>();
         }
 
         public static Painter GetPainter(Canvas canvas)
@@ -39,15 +41,15 @@ namespace Paint.ShapeList.Implementations
 
         public void CleanAll()
         {
-            ShapesList = new List<Shape>();
+            ShapesList = new List<MyShape>();
             Canvas.Children.Clear();
         }
 
-        public void AddNewShapeToList(Shape shape)
+        public void AddNewShapeToList(MyShape shape)
         {
             AddToList(shape);
             if (CanGoToForwardStep)
-                buffer = new Stack<Shape>();
+                buffer = new Stack<MyShape>();
         }
 
         public void GoToForwardStep()
@@ -62,15 +64,15 @@ namespace Paint.ShapeList.Implementations
             buffer.Push(shape);
         }
 
-        private void AddToList(Shape shape)
+        private void AddToList(MyShape shape)
         {
             ShapesList.Add(shape);
             shape.Draw(Canvas);
         }
 
-        private Shape RemoveFromList()
+        private MyShape RemoveFromList()
         {
-            var shape = ShapesList.Last<Shape>();
+            var shape = ShapesList.Last<MyShape>();
             ShapesList.Remove(shape);
             Canvas.Children.RemoveAt(Canvas.Children.Count - 1);
             return shape;

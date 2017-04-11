@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Shape">
+      <HintPath>..\Shapes\Shape\bin\Debug\Shape.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -58,28 +61,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Factory\IFactory.cs" />
-    <Compile Include="Factory\Implementations\EllipseFactory.cs" />
-    <Compile Include="Factory\Implementations\PolygonFactory.cs" />
-    <Compile Include="Factory\Implementations\PolylineFactory.cs" />
-    <Compile Include="Factory\Implementations\RectangleFactory.cs" />
-    <Compile Include="Factory\Implementations\RoundRectangleFactory.cs" />
+    <Compile Include="Serializer\Implementations\BinarySerializer.cs" />
+    <Compile Include="ShapeDownloader.cs" />
     <Compile Include="ShapeList\IShapeList.cs" />
-    <Compile Include="ShapeParams.cs" />
-    <Compile Include="Shapes\IEditable.cs" />
-    <Compile Include="Shapes\ISelectable.cs" />
-    <Compile Include="Shapes\WidthShapes\Implementations\Ellipse.cs" />
     <Compile Include="ShapeList\Implementations\Painter.cs" />
-    <Compile Include="Shapes\PointShapes\PointsShape.cs" />
-    <Compile Include="Shapes\PointShapes\Implementations\Polygon.cs" />
-    <Compile Include="Shapes\PointShapes\Implementations\Polyline.cs" />
-    <Compile Include="Shapes\WidthShapes\Implementations\Rectangle.cs" />
-    <Compile Include="Shapes\WidthShapes\Implementations\RoundRectangle.cs" />
-    <Compile Include="Shapes\Shape.cs" />
-    <Compile Include="Shapes\WidthShapes\WidthShape.cs" />
-    <Compile Include="Serializer\Implementations\Serializer.cs" />
+    <Compile Include="Serializer\Implementations\JsonSerializer.cs" />
     <Compile Include="Serializer\ISerializer.cs" />
-    <Compile Include="Shapes\IShape.cs" />
     <Page Include="Dictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -124,7 +111,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="kotiki.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
