@@ -47,7 +47,7 @@ namespace Paint
             shapeDownloader = new ShapeDownloader(ComboBoxShape);
             ComboBoxItemDefault.IsSelected = true;
             painter = Painter.GetPainter(CanvasPaint);
-            serializer = new BinarySerializer<Painter>();
+            serializer = new JsonSerializer<Painter>();
             openFileDialog = new OpenFileDialog();
             saveFileDialog = new SaveFileDialog();
             param = new ShapeParams
@@ -284,11 +284,11 @@ namespace Paint
         private void OpenShapeList(object sender, RoutedEventArgs e)
         {
             editedShape = null;
-            try
+           // try
             {
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    var newShapeList = serializer.ReadFromFile(openFileDialog.FileName);
+                    var newShapeList = serializer.ReadFromFile(openFileDialog.FileName, shapeDownloader);
                     if (!painter.CanClean ||
                         painter.CanClean &&
                         MessageBox.Show("The current shape list will be deleted. Do you want to continue?") ==
@@ -300,10 +300,10 @@ namespace Paint
                         CleanPointsTextBoxes();
                 }
             }
-            catch
-            {
-                ShowError(new Exception("File format is wrong."));
-            }
+            //catch
+            //{
+            //    ShowError(new Exception("File format is wrong."));
+            //}
         }
 
         private void ChangeShapeList(Painter newShapeList)
@@ -321,7 +321,7 @@ namespace Paint
             {
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    serializer.SaveToFile(painter, saveFileDialog.FileName);
+                    serializer.SaveToFile(painter, saveFileDialog.FileName, shapeDownloader);
                 }
             }
             catch(Exception exc)

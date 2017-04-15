@@ -2,7 +2,7 @@
 {
     interface ISerializer<T>
     {
-        void SaveToFile(T data, string fileName);
-        T ReadFromFile(string fileName);
+        void SaveToFile(T data, string fileName, ShapeDownloader shapeDownloader);
+        T ReadFromFile(string fileName, ShapeDownloader shapeDownloader);
     }
 }
