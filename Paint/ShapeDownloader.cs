@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Microsoft.Win32;
+using Paint.Serializer.Implementations;
+using Paint.ShapeList.Implementations;
 using Shape;
 using Shape.Interfaces;
 using MyShape = Shape.Shape;
@@ -30,6 +34,35 @@ namespace Paint
             watcher.EnableRaisingEvents = true;
         }
 
+        private void DownloadShapeToCombobox(MyShape shape)
+        {
+            //  var shapeIcon = (System.Windows.Shapes.Shape)type.GetMethod("GetShapeIcon").Invoke(factory, null);
+            comboBox.Dispatcher.Invoke(() =>
+            {
+                var item = new ComboBoxItem { Content = shape.Description };
+                if (shape.Description == "UserShape")
+                {
+                    item.Selected += (sender, args) =>
+                    {
+                        var openDialog = new OpenFileDialog();
+                        if (openDialog.ShowDialog() == true)
+                        {
+                            try
+                            {
+                                var serializer = new JsonSerializer<Painter>();
+                                MainWindow.Param.ShapesList = serializer.ReadFromFile(openDialog.FileName, this).ShapesList;
+                            }
+                            catch (Exception)
+                            {
+                                MessageBox.Show("File format is wrong!", "Error");
+                            }
+                        }
+                    };
+                }
+                comboBox.Items.Add(item);
+            });
+        }
+
         public void Download()
         {
             var files = Directory.GetFiles(FOLDER_NAME);
@@ -44,19 +77,13 @@ namespace Paint
                     var factory = (IShapeFactory)assembly.CreateInstance(typeName);
                     Factories.Add(factory);
 
-                    var objects = new object[] {new ShapeParams {PointsX = new double[0], PointsY = new double[0]}};
+                    var objects = new object[] {new ShapeParams {PointsX = new double[0], PointsY = new double[0], ShapesList = null}};
                     var shape = (MyShape)type.GetMethod("Create").Invoke(factory, objects);
                     Shapes.Add(shape);
-
-                  //  var shapeIcon = (System.Windows.Shapes.Shape)type.GetMethod("GetShapeIcon").Invoke(factory, null);
-                  //  var item = new ComboBoxItem().DataContext = shapeIcon;
-                    //comboBox.Items = new ItemCollection(item);
-                    comboBox.Dispatcher.Invoke(() => { 
-                        comboBox.Items.Add(shape.Description);
-                        comboBox.SelectedIndex = comboBox.Items.Count - 1;
-                    });
+                    DownloadShapeToCombobox(shape);
                 }
             }
+            comboBox.Dispatcher.Invoke(() => { comboBox.SelectedIndex = 0; });
         }
 
         public object InvokeMethod(int index, string methodName, object[] param)

@@ -26,6 +26,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0" Name="GridColor">
                         <Grid.RowDefinitions>
@@ -115,6 +116,7 @@
                             <Line Style="{StaticResource ResourceKey=BorderLine}" StrokeThickness="7"></Line>
                         </ComboBoxItem>
                     </ComboBox>
+                    <Button Name="ButtonCreater" Grid.Column="2" Margin="7" Click="CreateShape">Create shape</Button>
                 </Grid>
             </GroupBox>
             <Canvas Name="CanvasPaint" Grid.Row="1" Background="{StaticResource KOTIKI}" MouseLeftButtonUp="EndPaintNewShape" MouseLeftButtonDown="BeginPaintNewShape" MouseMove="ChangeNewShape" MouseRightButtonDown="EndPaintPointsShape"></Canvas>

@@ -30,7 +30,8 @@ namespace Paint.ShapeList.Implementations
 
         public static Painter GetPainter(Canvas canvas)
         {
-            return painter ?? (painter = new Painter(canvas));
+            return new Painter(canvas);
+           // return painter ?? (painter = new Painter(canvas));
         }
 
         public void DrawAll()

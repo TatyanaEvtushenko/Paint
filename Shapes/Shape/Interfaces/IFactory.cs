@@ -4,6 +4,6 @@
     {
         Shape Create(ShapeParams param);
         System.Windows.Shapes.Shape CreateShapeForDrawing(ShapeParams param);
-        System.Windows.Shapes.Shape GetShapeIcon();
+      //dd  System.Windows.Shapes.Shape GetShapeIcon();
     }
 }

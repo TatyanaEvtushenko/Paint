@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rectangle", "Shapes\Rectang
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoundRectangle", "Shapes\RoundRectangle\RoundRectangle.csproj", "{04BD30DD-008A-4F07-81C9-B73EB8D868B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserShape", "Shapes\UserShape\UserShape.csproj", "{733A7385-3A5D-45E3-9E77-9C52C86D5972}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{04BD30DD-008A-4F07-81C9-B73EB8D868B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04BD30DD-008A-4F07-81C9-B73EB8D868B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04BD30DD-008A-4F07-81C9-B73EB8D868B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{733A7385-3A5D-45E3-9E77-9C52C86D5972}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{733A7385-3A5D-45E3-9E77-9C52C86D5972}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{733A7385-3A5D-45E3-9E77-9C52C86D5972}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{733A7385-3A5D-45E3-9E77-9C52C86D5972}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,5 +70,6 @@ Global
 		{31FC1631-59AA-4520-8F51-7D76557A3B60} = {2F3478AA-188F-47BB-9110-A420EECD98F2}
 		{C4BF74C4-28BD-467C-AE32-C6011F3FAD4E} = {2F3478AA-188F-47BB-9110-A420EECD98F2}
 		{04BD30DD-008A-4F07-81C9-B73EB8D868B9} = {2F3478AA-188F-47BB-9110-A420EECD98F2}
+		{733A7385-3A5D-45E3-9E77-9C52C86D5972} = {2F3478AA-188F-47BB-9110-A420EECD98F2}
 	EndGlobalSection
 EndGlobal

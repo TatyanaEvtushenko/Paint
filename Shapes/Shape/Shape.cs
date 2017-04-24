@@ -33,13 +33,13 @@ namespace Shape
 
         protected abstract System.Windows.Shapes.Shape GetShapeOnCanvas(Canvas canvas);
 
-        public void Selecte(Canvas canvas)
+        public virtual void Selecte(Canvas canvas)
         {
             var shapeOnCanvas = GetShapeOnCanvas(canvas);
             shapeOnCanvas.StrokeDashArray = DoubleCollection.Parse("2");
         }
 
-        public void Unselecte(Canvas canvas)
+        public virtual void Unselecte(Canvas canvas)
         {
             var shapeOnCanvas = GetShapeOnCanvas(canvas);
             shapeOnCanvas.StrokeDashArray = null;

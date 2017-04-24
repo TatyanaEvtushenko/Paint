@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,22 +13,24 @@ using Paint.ShapeList.Implementations;
 using Shape;
 using Shape.Heirs;
 using Shape.Interfaces;
-using Shape = System.Windows.Shapes.Shape;
 using MyShape = Shape.Shape;
 
 namespace Paint
 {
     public partial class MainWindow : Window
     {
+        public static ShapeParams Param;
+
         private ShapeDownloader shapeDownloader;
+        private Painter shapeList;
         private Painter painter;
         private ISerializer<Painter> serializer;
         private OpenFileDialog openFileDialog;
         private SaveFileDialog saveFileDialog;
-        private ShapeParams param;
         private Point lastPoint;
 
-        private bool isFillPointer;
+        private bool isCreatedShape;
+        private bool isFillPointer = true;
         private bool isPaintNow;
         private bool isWidthShape;
         private int lastShapeIndex;
@@ -47,10 +50,11 @@ namespace Paint
             shapeDownloader = new ShapeDownloader(ComboBoxShape);
             ComboBoxItemDefault.IsSelected = true;
             painter = Painter.GetPainter(CanvasPaint);
+            shapeList = painter;
             serializer = new JsonSerializer<Painter>();
             openFileDialog = new OpenFileDialog();
             saveFileDialog = new SaveFileDialog();
-            param = new ShapeParams
+            Param = new ShapeParams
             {
                 Fill = TextBlockFill.Foreground,
                 Stroke = TextBlockContour.Foreground,
@@ -87,12 +91,12 @@ namespace Paint
             if (isFillPointer)
             {
                 TextBlockFill.SetValue(Grid.ColumnProperty, column);
-                TextBlockFill.Foreground = param.Fill = button.Background;
+                TextBlockFill.Foreground = Param.Fill = button.Background;
             }
             else
             {
                 TextBlockContour.SetValue(Grid.ColumnProperty, column);
-                TextBlockContour.Foreground = param.Stroke = button.Background;
+                TextBlockContour.Foreground = Param.Stroke = button.Background;
             }
         }
 
@@ -179,7 +183,7 @@ namespace Paint
                 InitializeWidthShapeParams();
             else
                 InitializePointsShapeParams();
-            var shape = (System.Windows.Shapes.Shape) shapeDownloader.InvokeMethod(ComboBoxShape.SelectedIndex, "CreateShapeForDrawing", new object[] { param });
+            var shape = (System.Windows.Shapes.Shape) shapeDownloader.InvokeMethod(ComboBoxShape.SelectedIndex, "CreateShapeForDrawing", new object[] { Param });
             if (shape != null)
                 CanvasPaint.Children.Add(shape);
         }
@@ -199,7 +203,7 @@ namespace Paint
 
         private void ChangeStrokeThickness(object sender, SelectionChangedEventArgs e)
         {
-            param.StrokeThickness =
+            Param.StrokeThickness =
                 ((Line) ((ComboBoxItem) ComboBoxStrokeThickness.SelectedItem).Content).StrokeThickness;
         }
 
@@ -213,8 +217,8 @@ namespace Paint
                 InitializePointsShapeParams();
             if (editedShape == null)
             {
-                var shape = (MyShape) shapeDownloader.InvokeMethod(ComboBoxShape.SelectedIndex, "Create", new object[] {param});
-                painter.AddNewShapeToList(shape);
+                var shape = (MyShape) shapeDownloader.InvokeMethod(ComboBoxShape.SelectedIndex, "Create", new object[] {Param});
+                shapeList.AddNewShapeToList(shape);
                 if (isWidthShape)
                     CleanWidthTextBoxes();
                 else
@@ -223,18 +227,18 @@ namespace Paint
             else
             {
                 if (editedShape is IEditable)
-                    editedShape.Edit(CanvasPaint, param);
+                    editedShape.Edit(CanvasPaint, Param);
             }
             ChangeStepButtonEnableds();
         }
 
         private void InitializeWidthShapeParams()
         {
-            param.X = Convert.ToDouble(TextBoxX.Text);
-            param.Y = Convert.ToDouble(TextBoxY.Text);
-            param.Width = Convert.ToDouble(TextBoxWidth.Text);
-            param.Height = Convert.ToDouble(TextBoxHeight.Text);
-            param.Angle = Convert.ToDouble(TextBoxAngle.Text);
+            Param.X = Convert.ToDouble(TextBoxX.Text);
+            Param.Y = Convert.ToDouble(TextBoxY.Text);
+            Param.Width = Convert.ToDouble(TextBoxWidth.Text);
+            Param.Height = Convert.ToDouble(TextBoxHeight.Text);
+            Param.Angle = Convert.ToDouble(TextBoxAngle.Text);
         }
 
         private void InitializePointsShapeParams()
@@ -242,43 +246,43 @@ namespace Paint
             var textBoxesX = StackPanelX.Children.OfType<TextBox>().ToList();
             var textBoxesY = StackPanelY.Children.OfType<TextBox>().ToList();
             int count = textBoxesX.Count - 1;
-            param.PointsX = new double[count];
-            param.PointsY = new double[count];
+            Param.PointsX = new double[count];
+            Param.PointsY = new double[count];
 
             for (int i = 0; i < count; i++)
             {
-                param.PointsX[i] = Convert.ToDouble(textBoxesX[i].Text);
-                param.PointsY[i] = Convert.ToDouble(textBoxesY[i].Text);
+                Param.PointsX[i] = Convert.ToDouble(textBoxesX[i].Text);
+                Param.PointsY[i] = Convert.ToDouble(textBoxesY[i].Text);
             }
         }
 
         private void GoToForwardStep(object sender, RoutedEventArgs e)
         {
             editedShape = null;
-            painter.GoToForwardStep();
+            shapeList.GoToForwardStep();
             ChangeStepButtonEnableds();
         }
 
         private void GoToBackStep(object sender, RoutedEventArgs e)
         {
             editedShape = null;
-            painter.GoToBackStep();
+            shapeList.GoToBackStep();
             ChangeStepButtonEnableds();
         }
 
         private void CleanAll(object sender, RoutedEventArgs e)
         {
             editedShape = null;
-            painter.CleanAll();
+            shapeList.CleanAll();
             ChangeStepButtonEnableds();
         }
 
         private void ChangeStepButtonEnableds()
         {
-            ButtonClean.IsEnabled = ButtonSave.IsEnabled = painter.CanClean;
-            ButtonForward.IsEnabled = painter.CanGoToForwardStep;
-            ButtonBack.IsEnabled = painter.CanGoToBackStep;
-            ListBoxShapes.ItemsSource = painter.ShapesList.ToList();
+            ButtonClean.IsEnabled = ButtonSave.IsEnabled = shapeList.CanClean;
+            ButtonForward.IsEnabled = shapeList.CanGoToForwardStep;
+            ButtonBack.IsEnabled = shapeList.CanGoToBackStep;
+            ListBoxShapes.ItemsSource = shapeList.ShapesList.ToList();
         }
 
         private void OpenShapeList(object sender, RoutedEventArgs e)
@@ -289,8 +293,8 @@ namespace Paint
                 if (openFileDialog.ShowDialog() == true)
                 {
                     var newShapeList = serializer.ReadFromFile(openFileDialog.FileName, shapeDownloader);
-                    if (!painter.CanClean ||
-                        painter.CanClean &&
+                    if (!shapeList.CanClean ||
+                        shapeList.CanClean &&
                         MessageBox.Show("The current shape list will be deleted. Do you want to continue?") ==
                         MessageBoxResult.OK)
                     ChangeShapeList(newShapeList);
@@ -308,9 +312,10 @@ namespace Paint
 
         private void ChangeShapeList(Painter newShapeList)
         {
-            painter.CleanAll();
-            painter.ShapesList = newShapeList.ShapesList;
-            painter.DrawAll();
+            var shapes = newShapeList.ShapesList; 
+            shapeList.CleanAll();
+            shapeList.ShapesList = shapes;
+            shapeList.DrawAll();
             ChangeStepButtonEnableds();
         }
 
@@ -321,7 +326,7 @@ namespace Paint
             {
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    serializer.SaveToFile(painter, saveFileDialog.FileName, shapeDownloader);
+                    serializer.SaveToFile(shapeList, saveFileDialog.FileName, shapeDownloader);
                 }
             }
             catch(Exception exc)
@@ -459,14 +464,14 @@ namespace Paint
         private void SelecteShape()
         {
             var index = ListBoxShapes.SelectedIndex;
-            editedShape = painter.ShapesList[index];
+            editedShape = shapeList.ShapesList[index];
             if (editedShape is ISelectable)
                 editedShape.Selecte(CanvasPaint);
             if (editedShape is IEditable)
             {
-                param.Fill = editedShape.Fill;
-                param.StrokeThickness = editedShape.StrokeThickness;
-                param.Stroke = editedShape.Stroke;
+                Param.Fill = editedShape.Fill;
+                Param.StrokeThickness = editedShape.StrokeThickness;
+                Param.Stroke = editedShape.Stroke;
                 if (editedShape is WidthShape)
                     SelecteWidthShape((WidthShape)editedShape);
                 else
@@ -505,5 +510,28 @@ namespace Paint
                 ((TextBox)StackPanelY.Children[i]).Text = pointsShape.Points[i].Y.ToString();
             }
         }
+
+        private void CreateShape(object sender, RoutedEventArgs e)
+        {
+            var button = (Button) sender;
+            isCreatedShape = !isCreatedShape;
+            button.Background = new SolidColorBrush(isCreatedShape ? Colors.LightSalmon : Colors.LightGray);
+            if (isCreatedShape)
+            {
+                var newShape = Painter.GetPainter(CanvasPaint);
+                shapeList = newShape;
+            }
+            else
+            {
+                var saveDialog = new SaveFileDialog();
+                if (saveDialog.ShowDialog() == true)
+                {
+                    serializer.SaveToFile(shapeList, saveDialog.FileName, shapeDownloader);
+                }
+                shapeList = painter;
+            }
+            ChangeShapeList(shapeList);
+        }
     }
 }
+  
