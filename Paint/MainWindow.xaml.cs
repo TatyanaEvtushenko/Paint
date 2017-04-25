@@ -41,6 +41,7 @@ namespace Paint
         public MainWindow()
         {
             InitializeComponent();
+            ConfigurationSettings.Download(this);
             InitializeParams();
             shapeDownloader.Download();
         }
@@ -49,9 +50,9 @@ namespace Paint
         {
             shapeDownloader = new ShapeDownloader(ComboBoxShape);
             ComboBoxItemDefault.IsSelected = true;
-            painter = Painter.GetPainter(CanvasPaint);
+            painter = new Painter(CanvasPaint);
             shapeList = painter;
-            serializer = new JsonSerializer<Painter>();
+            serializer = new JsonSerializer<Painter>(shapeDownloader);
             openFileDialog = new OpenFileDialog();
             saveFileDialog = new SaveFileDialog();
             Param = new ShapeParams
@@ -292,7 +293,7 @@ namespace Paint
             {
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    var newShapeList = serializer.ReadFromFile(openFileDialog.FileName, shapeDownloader);
+                    var newShapeList = serializer.ReadFromFile(openFileDialog.FileName);
                     if (!shapeList.CanClean ||
                         shapeList.CanClean &&
                         MessageBox.Show("The current shape list will be deleted. Do you want to continue?") ==
@@ -326,7 +327,7 @@ namespace Paint
             {
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    serializer.SaveToFile(shapeList, saveFileDialog.FileName, shapeDownloader);
+                    serializer.SaveToFile(shapeList, saveFileDialog.FileName);
                 }
             }
             catch(Exception exc)
@@ -518,7 +519,7 @@ namespace Paint
             button.Background = new SolidColorBrush(isCreatedShape ? Colors.LightSalmon : Colors.LightGray);
             if (isCreatedShape)
             {
-                var newShape = Painter.GetPainter(CanvasPaint);
+                var newShape = new Painter(CanvasPaint);
                 shapeList = newShape;
             }
             else
@@ -526,11 +527,27 @@ namespace Paint
                 var saveDialog = new SaveFileDialog();
                 if (saveDialog.ShowDialog() == true)
                 {
-                    serializer.SaveToFile(shapeList, saveDialog.FileName, shapeDownloader);
+                    serializer.SaveToFile(shapeList, saveDialog.FileName);
                 }
                 shapeList = painter;
             }
             ChangeShapeList(shapeList);
+        }
+
+        private void Exit(object sender, EventArgs e)
+        {
+            ConfigurationSettings.Save(this);
+            Close();
+        }
+
+        private void ChangeBackground(object sender, RoutedEventArgs e)
+        {
+            var openDialog = new OpenFileDialog {Filter = "Image (*.jpg)|*.jpg|*.jpeg|*.png"};
+            if (openDialog.ShowDialog() == true)
+            {
+                var imageSource = (ImageSource)new ImageSourceConverter().ConvertFrom(openDialog.FileName);
+                CanvasPaint.Background = new ImageBrush(imageSource) {Stretch = Stretch.UniformToFill};
+            }
         }
     }
 }

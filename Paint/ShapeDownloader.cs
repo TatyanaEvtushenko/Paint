@@ -49,8 +49,8 @@ namespace Paint
                         {
                             try
                             {
-                                var serializer = new JsonSerializer<Painter>();
-                                MainWindow.Param.ShapesList = serializer.ReadFromFile(openDialog.FileName, this).ShapesList;
+                                var serializer = new JsonSerializer<Painter>(this);
+                                MainWindow.Param.ShapesList = serializer.ReadFromFile(openDialog.FileName).ShapesList;
                             }
                             catch (Exception)
                             {

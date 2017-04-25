@@ -12,8 +12,14 @@ namespace Paint.Serializer.Implementations
     {
         private DataContractJsonSerializer serializer;
         private Type[] knownTypes;
+        private ShapeDownloader shapeDownloader;
 
-        private void UpdateSerializer(ShapeDownloader shapeDownloader)
+        public JsonSerializer(ShapeDownloader shapeDownloader)
+        {
+            this.shapeDownloader = shapeDownloader;
+        }
+
+        private void UpdateSerializer()
         {
             knownTypes = new Type[] { typeof(MatrixTransform), typeof(SolidColorBrush) };
             foreach (var shape in shapeDownloader.Shapes)
@@ -72,9 +78,9 @@ namespace Paint.Serializer.Implementations
             return tempFileName;
         }
 
-        public T ReadFromFile(string fileName, ShapeDownloader shapeDownloader)
+        public T ReadFromFile(string fileName)
         {
-            UpdateSerializer(shapeDownloader);
+            UpdateSerializer();
             T data;
             var tempFileName = DeleteUnknownedTypes(fileName);
             using (var stream = new FileStream(tempFileName, FileMode.Open, FileAccess.Read))
@@ -85,9 +91,9 @@ namespace Paint.Serializer.Implementations
             return data;
         }
 
-        public void SaveToFile(T data, string fileName, ShapeDownloader shapeDownloader)
+        public void SaveToFile(T data, string fileName)
         {
-            UpdateSerializer(shapeDownloader);
+            UpdateSerializer();
             if (File.Exists(fileName))
                 File.Delete(fileName);
             using (var stream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write))

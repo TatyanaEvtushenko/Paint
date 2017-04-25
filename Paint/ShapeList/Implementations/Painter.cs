@@ -11,7 +11,6 @@ namespace Paint.ShapeList.Implementations
     [DataContract]
     class Painter : IShapeList
     {
-        private static Painter painter;
         private Stack<MyShape> buffer;
         public Canvas Canvas { get; set; }
         [DataMember]
@@ -21,17 +20,11 @@ namespace Paint.ShapeList.Implementations
         public bool CanGoToBackStep => ShapesList.Count > 0;
         public bool CanClean => ShapesList.Count > 0;
 
-        private Painter(Canvas canvasPainter)
+        public Painter(Canvas canvasPainter)
         {
             Canvas = canvasPainter;
             ShapesList = new List<MyShape>();
             buffer = new Stack<MyShape>();
-        }
-
-        public static Painter GetPainter(Canvas canvas)
-        {
-            return new Painter(canvas);
-           // return painter ?? (painter = new Painter(canvas));
         }
 
         public void DrawAll()

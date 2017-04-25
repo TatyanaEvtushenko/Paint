@@ -36,13 +36,15 @@ namespace Shape
         public virtual void Selecte(Canvas canvas)
         {
             var shapeOnCanvas = GetShapeOnCanvas(canvas);
-            shapeOnCanvas.StrokeDashArray = DoubleCollection.Parse("2");
+            if (shapeOnCanvas != null)
+                shapeOnCanvas.StrokeDashArray = DoubleCollection.Parse("2");
         }
 
         public virtual void Unselecte(Canvas canvas)
         {
             var shapeOnCanvas = GetShapeOnCanvas(canvas);
-            shapeOnCanvas.StrokeDashArray = null;
+            if (shapeOnCanvas != null)
+                shapeOnCanvas.StrokeDashArray = null;
         }
 
         protected virtual void EditParams(ShapeParams param)
@@ -62,8 +64,11 @@ namespace Shape
         public void Edit(Canvas canvas, ShapeParams param)
         {
             var shapeOnCanvas = GetShapeOnCanvas(canvas);
-            EditParams(param);
-            EditShapeOnCanvas(shapeOnCanvas);
+            if (shapeOnCanvas != null)
+            {
+                EditParams(param);
+                EditShapeOnCanvas(shapeOnCanvas);
+            }
         }
     }
 }

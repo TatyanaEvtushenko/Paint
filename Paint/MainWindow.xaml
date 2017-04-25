@@ -5,18 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Paint"
         mc:Ignorable="d"
-        Title="New paint" Height="750" Width="1150">
+        Title="New paint" Height="750" Width="1150" Closed="Exit">
     
     <Window.Resources>
         <ResourceDictionary Source="Dictionary.xaml"/>
     </Window.Resources>
 
     <Grid Background="{StaticResource ResourceKey=ToolBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="{StaticResource ToolBrush}">
+            <MenuItem Header="File">
+                <MenuItem Header="Open" Click="OpenShapeList"></MenuItem>
+                <MenuItem Header="Save" Click="SaveShapeList"></MenuItem>
+                <MenuItem Header="Exit" Click="Exit"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Settings">
+                <MenuItem Header="Change background" Click="ChangeBackground"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Column="0" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
@@ -121,7 +135,7 @@
             </GroupBox>
             <Canvas Name="CanvasPaint" Grid.Row="1" Background="{StaticResource KOTIKI}" MouseLeftButtonUp="EndPaintNewShape" MouseLeftButtonDown="BeginPaintNewShape" MouseMove="ChangeNewShape" MouseRightButtonDown="EndPaintPointsShape"></Canvas>
         </Grid>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
